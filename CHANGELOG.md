@@ -12,7 +12,7 @@ Alle wesentlichen Änderungen am OpenKNX Hue Gateway Applikationsprodukt werden 
   - Alle nachfolgenden HUE-KO-Nummern verschieben sich um **+160** (16 Kanäle × 10 neue KOs).
   - `HUE_KoOffset` wird von OpenKNXproducer aus dem neuen `LMG_KoBlockSize` neu berechnet.
   - **Alle HUE-Gruppenadressen müssen in der ETS nach dem Update neu verknüpft werden.**
-- `ApplicationVersion` in `HueGateway.conf.xml` von `0.5` auf `0.7` erhöht.
+- `ApplicationVersion` in `HueGateway.conf.xml` von `0.6` auf `0.7` erhöht.
 
 ### Hinzugefügt (über Modulversionen)
 - HCL-Per-Kanal-Sperre (K09 LockColor / K10 LockBrightness) mit 3-Wege-Modus (Aus / Vollsperre / Getrennt) — OFM-LightManager 0.3.0.
@@ -28,5 +28,5 @@ Alle wesentlichen Änderungen am OpenKNX Hue Gateway Applikationsprodukt werden 
 - Nach ETS-Download: alle HUE-Gruppenadressen prüfen und neu verknüpfen (KO-Verschiebung +160).
 - Details und vollständige Migrations-Hinweise im OFM-LightManager CHANGELOG 0.3.0 sowie in den Help-Baggages `LMG-Migration-0.3.0`.
 
-## [0.5] - vorherige Version
+## [0.6] - vorherige Version
 - Siehe Modul-CHANGELOGs `OFM-HueGatewayModule` und `OFM-LightManager` für historische Details.
