@@ -21,7 +21,7 @@
 #define MAIN_ApplicationNumber 2
 #define MAIN_ApplicationVersion 7
 #define MAIN_ApplicationEncoding iso-8859-15
-#define MAIN_ParameterSize 31613
+#define MAIN_ParameterSize 32980
 #define MAIN_MaxKoNumber 1143
 #define MAIN_OrderNumber "OpenKNX-SR-HUE"
 #define BASE_ModuleVersion 24
@@ -226,6 +226,9 @@
 #define NET_OTAUpdate                           131      // 2 Bits, Bit 4-3
 #define     NET_OTAUpdateMask 0x18
 #define     NET_OTAUpdateShift 3
+#define NET_MQTT                                131      // 1 Bit, Bit 2
+#define     NET_MQTTMask 0x04
+#define     NET_MQTTShift 2
 #define NET_HostName                            132      // char*, 24 Byte
 #define     NET_HostNameLength 24
 #define NET_LanMode                             173      // 4 Bits, Bit 7-4
@@ -233,6 +236,21 @@
 #define     NET_LanModeShift 4
 #define NET_NTPServer                           174      // char*, 50 Byte
 #define     NET_NTPServerLength 50
+#define NET_MQTTServer                          225      // char*, 20 Byte
+#define     NET_MQTTServerLength 20
+#define NET_MQTTUsername                        246      // char*, 20 Byte
+#define     NET_MQTTUsernameLength 20
+#define NET_MQTTPassword                        267      // char*, 20 Byte
+#define     NET_MQTTPasswordLength 20
+#define NET_MQTTPrefix                          288      // char*, 20 Byte
+#define     NET_MQTTPrefixLength 20
+#define NET_MQTTPort                            309      // uint16_t
+#define NET_MQTTTPRawData                       311      // 1 Bit, Bit 7
+#define     NET_MQTTTPRawDataMask 0x80
+#define     NET_MQTTTPRawDataShift 7
+#define NET_MQTTMode                            311      // 1 Bit, Bit 6
+#define     NET_MQTTModeMask 0x40
+#define     NET_MQTTModeShift 6
 
 // IP-Adresse
 #define ParamNET_HostAddress                         (knx.paramInt(NET_HostAddress))
@@ -254,6 +272,8 @@
 #define ParamNET_NTP                                 ((bool)(knx.paramByte(NET_NTP) & NET_NTPMask))
 // OTA-Update
 #define ParamNET_OTAUpdate                           ((knx.paramByte(NET_OTAUpdate) & NET_OTAUpdateMask) >> NET_OTAUpdateShift)
+// MQTT
+#define ParamNET_MQTT                                ((bool)(knx.paramByte(NET_MQTT) & NET_MQTTMask))
 // Hostname
 #define ParamNET_HostName                            (knx.paramData(NET_HostName))
 #define ParamNET_HostNameStr                         (knx.paramString(NET_HostName, NET_HostNameLength))
@@ -262,19 +282,37 @@
 // Zeitserver
 #define ParamNET_NTPServer                           (knx.paramData(NET_NTPServer))
 #define ParamNET_NTPServerStr                        (knx.paramString(NET_NTPServer, NET_NTPServerLength))
+// Server
+#define ParamNET_MQTTServer                          (knx.paramData(NET_MQTTServer))
+#define ParamNET_MQTTServerStr                       (knx.paramString(NET_MQTTServer, NET_MQTTServerLength))
+// Benutzer
+#define ParamNET_MQTTUsername                        (knx.paramData(NET_MQTTUsername))
+#define ParamNET_MQTTUsernameStr                     (knx.paramString(NET_MQTTUsername, NET_MQTTUsernameLength))
+// Passwort
+#define ParamNET_MQTTPassword                        (knx.paramData(NET_MQTTPassword))
+#define ParamNET_MQTTPasswordStr                     (knx.paramString(NET_MQTTPassword, NET_MQTTPasswordLength))
+// Prefix
+#define ParamNET_MQTTPrefix                          (knx.paramData(NET_MQTTPrefix))
+#define ParamNET_MQTTPrefixStr                       (knx.paramString(NET_MQTTPrefix, NET_MQTTPrefixLength))
+// Port
+#define ParamNET_MQTTPort                            (knx.paramWord(NET_MQTTPort))
+// Sende KNX TP Rohdaten
+#define ParamNET_MQTTTPRawData                       ((bool)(knx.paramByte(NET_MQTTTPRawData) & NET_MQTTTPRawDataMask))
+// Modus
+#define ParamNET_MQTTMode                            ((bool)(knx.paramByte(NET_MQTTMode) & NET_MQTTModeMask))
 
 
 
-#define LMG_LMGHCLEnable                        256      // 8 Bits, Bit 7-0
-#define LMG_LMGHCLMasterCount                   257      // uint8_t
-#define LMG_LMGHCLUpdateInterval                258      // uint16_t
-#define LMG_LMGHCLFadeDuration                  260      // uint8_t
-#define LMG_LMGHCLLockFallback                  1266      // 8 Bits, Bit 7-0
-#define LMG_LMGHCLFallbackPolicy                1263      // 8 Bits, Bit 7-0
-#define LMG_LMGHCLFallbackDurationSec           1264      // uint16_t
-#define LMG_LMGHCLFallbackReleaseTime           1268      // 16 Bits, Bit 15-0
-#define LMG_LMGSummerActiveInit                 1270      // 8 Bits, Bit 7-0
-#define LMG_LMGSummerActiveSavePower            1271      // 1 Bit, Bit 7
+#define LMG_LMGHCLEnable                        343      // 8 Bits, Bit 7-0
+#define LMG_LMGHCLMasterCount                   344      // uint8_t
+#define LMG_LMGHCLUpdateInterval                345      // uint16_t
+#define LMG_LMGHCLFadeDuration                  347      // uint8_t
+#define LMG_LMGHCLLockFallback                  1353      // 8 Bits, Bit 7-0
+#define LMG_LMGHCLFallbackPolicy                1350      // 8 Bits, Bit 7-0
+#define LMG_LMGHCLFallbackDurationSec           1351      // uint16_t
+#define LMG_LMGHCLFallbackReleaseTime           1355      // 16 Bits, Bit 15-0
+#define LMG_LMGSummerActiveInit                 1357      // 8 Bits, Bit 7-0
+#define LMG_LMGSummerActiveSavePower            1358      // 1 Bit, Bit 7
 #define     LMG_LMGSummerActiveSavePowerMask 0x80
 #define     LMG_LMGSummerActiveSavePowerShift 7
 
@@ -294,9 +332,9 @@
 #define ParamLMG_LMGHCLFallbackDurationSec           (knx.paramWord(LMG_LMGHCLFallbackDurationSec))
 // Rückfall-Uhrzeit
 #define ParamLMG_LMGHCLFallbackReleaseTime           (knx.paramWord(LMG_LMGHCLFallbackReleaseTime))
-// Sommer-Init beim Start
+// Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit
 #define ParamLMG_LMGSummerActiveInit                 (knx.paramByte(LMG_LMGSummerActiveInit))
-// Letzten Sommer-Zustand speichern
+// Saisonalen Zustand speichern und beim nächsten Neustart als Vorbelegung nutzen?
 #define ParamLMG_LMGSummerActiveSavePower            ((bool)(knx.paramByte(LMG_LMGSummerActiveSavePower) & LMG_LMGSummerActiveSavePowerMask))
 
 #define LMG_KoLMGHCLLock 400
@@ -313,7 +351,7 @@
 #define LMG_ChannelCount 16
 
 // Parameter per channel
-#define LMG_ParamBlockOffset 1272
+#define LMG_ParamBlockOffset 1359
 #define LMG_ParamBlockSize 879
 #define LMG_ParamCalcIndex(index) (index + LMG_ParamBlockOffset + _channelIndex * LMG_ParamBlockSize)
 
@@ -375,8 +413,10 @@
 #define LMG_CHExtLuxMax                         224      // uint16_t
 #define LMG_CHSeasonSource                      226      // 8 Bits, Bit 7-0
 #define LMG_CHSeasonOffsetDays                  227      // int8_t
-#define LMG_CHSummerStart                       228      // uint16_t
-#define LMG_CHSummerEnd                         230      // uint16_t
+#define LMG_CHSummerStartMonth                  229      // 8 Bits, Bit 7-0
+#define LMG_CHSummerStartDay                    228      // uint8_t
+#define LMG_CHSummerEndMonth                    231      // 8 Bits, Bit 7-0
+#define LMG_CHSummerEndDay                      230      // uint8_t
 #define LMG_CHUseDayNightSlew                   232      // 1 Bit, Bit 7
 #define     LMG_CHUseDayNightSlewMask 0x80
 #define     LMG_CHUseDayNightSlewShift 7
@@ -515,17 +555,29 @@
 #define LMG_CHP4_DayFei                         317      // 1 Bit, Bit 7
 #define     LMG_CHP4_DayFeiMask 0x80
 #define     LMG_CHP4_DayFeiShift 7
+#define LMG_CHP1_SeasonFilter                   257      // 2 Bits, Bit 6-5
+#define     LMG_CHP1_SeasonFilterMask 0x60
+#define     LMG_CHP1_SeasonFilterShift 5
+#define LMG_CHP2_SeasonFilter                   277      // 2 Bits, Bit 6-5
+#define     LMG_CHP2_SeasonFilterMask 0x60
+#define     LMG_CHP2_SeasonFilterShift 5
+#define LMG_CHP3_SeasonFilter                   297      // 2 Bits, Bit 6-5
+#define     LMG_CHP3_SeasonFilterMask 0x60
+#define     LMG_CHP3_SeasonFilterShift 5
+#define LMG_CHP4_SeasonFilter                   317      // 2 Bits, Bit 6-5
+#define     LMG_CHP4_SeasonFilterMask 0x60
+#define     LMG_CHP4_SeasonFilterShift 5
 #define LMG_CHP4_SPCount                        318      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP1_Active                     319      // 1 Bit, Bit 7
 #define     LMG_CHP1_SP1_ActiveMask 0x80
 #define     LMG_CHP1_SP1_ActiveShift 7
 #define LMG_CHP1_SP1_AnchorType                 320      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP1_Hour                       321      // uint8_t
-#define LMG_CHP1_SP1_Minute                     322      // uint8_t
+#define LMG_CHP1_SP1_Hour                       321      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP1_Minute                     322      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP1_OffsetMinutes              323      // int16_t
 #define LMG_CHP1_SP1_ClampMode                  325      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP1_ClampHour                  326      // uint8_t
-#define LMG_CHP1_SP1_ClampMinute                327      // uint8_t
+#define LMG_CHP1_SP1_ClampHour                  326      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP1_ClampMinute                327      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP1_Kelvin                     328      // uint16_t
 #define LMG_CHP1_SP1_Brightness                 330      // uint8_t
 #define LMG_CHP1_SP1_ExtColorTempMode           331      // 8 Bits, Bit 7-0
@@ -534,12 +586,12 @@
 #define     LMG_CHP1_SP2_ActiveMask 0x80
 #define     LMG_CHP1_SP2_ActiveShift 7
 #define LMG_CHP1_SP2_AnchorType                 334      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP2_Hour                       335      // uint8_t
-#define LMG_CHP1_SP2_Minute                     336      // uint8_t
+#define LMG_CHP1_SP2_Hour                       335      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP2_Minute                     336      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP2_OffsetMinutes              337      // int16_t
 #define LMG_CHP1_SP2_ClampMode                  339      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP2_ClampHour                  340      // uint8_t
-#define LMG_CHP1_SP2_ClampMinute                341      // uint8_t
+#define LMG_CHP1_SP2_ClampHour                  340      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP2_ClampMinute                341      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP2_Kelvin                     342      // uint16_t
 #define LMG_CHP1_SP2_Brightness                 344      // uint8_t
 #define LMG_CHP1_SP2_ExtColorTempMode           345      // 8 Bits, Bit 7-0
@@ -548,12 +600,12 @@
 #define     LMG_CHP1_SP3_ActiveMask 0x80
 #define     LMG_CHP1_SP3_ActiveShift 7
 #define LMG_CHP1_SP3_AnchorType                 348      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP3_Hour                       349      // uint8_t
-#define LMG_CHP1_SP3_Minute                     350      // uint8_t
+#define LMG_CHP1_SP3_Hour                       349      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP3_Minute                     350      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP3_OffsetMinutes              351      // int16_t
 #define LMG_CHP1_SP3_ClampMode                  353      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP3_ClampHour                  354      // uint8_t
-#define LMG_CHP1_SP3_ClampMinute                355      // uint8_t
+#define LMG_CHP1_SP3_ClampHour                  354      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP3_ClampMinute                355      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP3_Kelvin                     356      // uint16_t
 #define LMG_CHP1_SP3_Brightness                 358      // uint8_t
 #define LMG_CHP1_SP3_ExtColorTempMode           359      // 8 Bits, Bit 7-0
@@ -562,12 +614,12 @@
 #define     LMG_CHP1_SP4_ActiveMask 0x80
 #define     LMG_CHP1_SP4_ActiveShift 7
 #define LMG_CHP1_SP4_AnchorType                 362      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP4_Hour                       363      // uint8_t
-#define LMG_CHP1_SP4_Minute                     364      // uint8_t
+#define LMG_CHP1_SP4_Hour                       363      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP4_Minute                     364      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP4_OffsetMinutes              365      // int16_t
 #define LMG_CHP1_SP4_ClampMode                  367      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP4_ClampHour                  368      // uint8_t
-#define LMG_CHP1_SP4_ClampMinute                369      // uint8_t
+#define LMG_CHP1_SP4_ClampHour                  368      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP4_ClampMinute                369      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP4_Kelvin                     370      // uint16_t
 #define LMG_CHP1_SP4_Brightness                 372      // uint8_t
 #define LMG_CHP1_SP4_ExtColorTempMode           373      // 8 Bits, Bit 7-0
@@ -576,12 +628,12 @@
 #define     LMG_CHP1_SP5_ActiveMask 0x80
 #define     LMG_CHP1_SP5_ActiveShift 7
 #define LMG_CHP1_SP5_AnchorType                 376      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP5_Hour                       377      // uint8_t
-#define LMG_CHP1_SP5_Minute                     378      // uint8_t
+#define LMG_CHP1_SP5_Hour                       377      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP5_Minute                     378      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP5_OffsetMinutes              379      // int16_t
 #define LMG_CHP1_SP5_ClampMode                  381      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP5_ClampHour                  382      // uint8_t
-#define LMG_CHP1_SP5_ClampMinute                383      // uint8_t
+#define LMG_CHP1_SP5_ClampHour                  382      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP5_ClampMinute                383      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP5_Kelvin                     384      // uint16_t
 #define LMG_CHP1_SP5_Brightness                 386      // uint8_t
 #define LMG_CHP1_SP5_ExtColorTempMode           387      // 8 Bits, Bit 7-0
@@ -590,12 +642,12 @@
 #define     LMG_CHP1_SP6_ActiveMask 0x80
 #define     LMG_CHP1_SP6_ActiveShift 7
 #define LMG_CHP1_SP6_AnchorType                 390      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP6_Hour                       391      // uint8_t
-#define LMG_CHP1_SP6_Minute                     392      // uint8_t
+#define LMG_CHP1_SP6_Hour                       391      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP6_Minute                     392      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP6_OffsetMinutes              393      // int16_t
 #define LMG_CHP1_SP6_ClampMode                  395      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP6_ClampHour                  396      // uint8_t
-#define LMG_CHP1_SP6_ClampMinute                397      // uint8_t
+#define LMG_CHP1_SP6_ClampHour                  396      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP6_ClampMinute                397      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP6_Kelvin                     398      // uint16_t
 #define LMG_CHP1_SP6_Brightness                 400      // uint8_t
 #define LMG_CHP1_SP6_ExtColorTempMode           401      // 8 Bits, Bit 7-0
@@ -604,12 +656,12 @@
 #define     LMG_CHP1_SP7_ActiveMask 0x80
 #define     LMG_CHP1_SP7_ActiveShift 7
 #define LMG_CHP1_SP7_AnchorType                 404      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP7_Hour                       405      // uint8_t
-#define LMG_CHP1_SP7_Minute                     406      // uint8_t
+#define LMG_CHP1_SP7_Hour                       405      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP7_Minute                     406      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP7_OffsetMinutes              407      // int16_t
 #define LMG_CHP1_SP7_ClampMode                  409      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP7_ClampHour                  410      // uint8_t
-#define LMG_CHP1_SP7_ClampMinute                411      // uint8_t
+#define LMG_CHP1_SP7_ClampHour                  410      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP7_ClampMinute                411      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP7_Kelvin                     412      // uint16_t
 #define LMG_CHP1_SP7_Brightness                 414      // uint8_t
 #define LMG_CHP1_SP7_ExtColorTempMode           415      // 8 Bits, Bit 7-0
@@ -618,12 +670,12 @@
 #define     LMG_CHP1_SP8_ActiveMask 0x80
 #define     LMG_CHP1_SP8_ActiveShift 7
 #define LMG_CHP1_SP8_AnchorType                 418      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP8_Hour                       419      // uint8_t
-#define LMG_CHP1_SP8_Minute                     420      // uint8_t
+#define LMG_CHP1_SP8_Hour                       419      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP8_Minute                     420      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP8_OffsetMinutes              421      // int16_t
 #define LMG_CHP1_SP8_ClampMode                  423      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP8_ClampHour                  424      // uint8_t
-#define LMG_CHP1_SP8_ClampMinute                425      // uint8_t
+#define LMG_CHP1_SP8_ClampHour                  424      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP8_ClampMinute                425      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP8_Kelvin                     426      // uint16_t
 #define LMG_CHP1_SP8_Brightness                 428      // uint8_t
 #define LMG_CHP1_SP8_ExtColorTempMode           429      // 8 Bits, Bit 7-0
@@ -632,12 +684,12 @@
 #define     LMG_CHP1_SP9_ActiveMask 0x80
 #define     LMG_CHP1_SP9_ActiveShift 7
 #define LMG_CHP1_SP9_AnchorType                 432      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP9_Hour                       433      // uint8_t
-#define LMG_CHP1_SP9_Minute                     434      // uint8_t
+#define LMG_CHP1_SP9_Hour                       433      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP9_Minute                     434      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP9_OffsetMinutes              435      // int16_t
 #define LMG_CHP1_SP9_ClampMode                  437      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP9_ClampHour                  438      // uint8_t
-#define LMG_CHP1_SP9_ClampMinute                439      // uint8_t
+#define LMG_CHP1_SP9_ClampHour                  438      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP9_ClampMinute                439      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP9_Kelvin                     440      // uint16_t
 #define LMG_CHP1_SP9_Brightness                 442      // uint8_t
 #define LMG_CHP1_SP9_ExtColorTempMode           443      // 8 Bits, Bit 7-0
@@ -646,12 +698,12 @@
 #define     LMG_CHP1_SP10_ActiveMask 0x80
 #define     LMG_CHP1_SP10_ActiveShift 7
 #define LMG_CHP1_SP10_AnchorType                446      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP10_Hour                      447      // uint8_t
-#define LMG_CHP1_SP10_Minute                    448      // uint8_t
+#define LMG_CHP1_SP10_Hour                      447      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP10_Minute                    448      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP10_OffsetMinutes             449      // int16_t
 #define LMG_CHP1_SP10_ClampMode                 451      // 8 Bits, Bit 7-0
-#define LMG_CHP1_SP10_ClampHour                 452      // uint8_t
-#define LMG_CHP1_SP10_ClampMinute               453      // uint8_t
+#define LMG_CHP1_SP10_ClampHour                 452      // 8 Bits, Bit 7-0
+#define LMG_CHP1_SP10_ClampMinute               453      // 8 Bits, Bit 7-0
 #define LMG_CHP1_SP10_Kelvin                    454      // uint16_t
 #define LMG_CHP1_SP10_Brightness                456      // uint8_t
 #define LMG_CHP1_SP10_ExtColorTempMode          457      // 8 Bits, Bit 7-0
@@ -660,12 +712,12 @@
 #define     LMG_CHP2_SP1_ActiveMask 0x80
 #define     LMG_CHP2_SP1_ActiveShift 7
 #define LMG_CHP2_SP1_AnchorType                 460      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP1_Hour                       461      // uint8_t
-#define LMG_CHP2_SP1_Minute                     462      // uint8_t
+#define LMG_CHP2_SP1_Hour                       461      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP1_Minute                     462      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP1_OffsetMinutes              463      // int16_t
 #define LMG_CHP2_SP1_ClampMode                  465      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP1_ClampHour                  466      // uint8_t
-#define LMG_CHP2_SP1_ClampMinute                467      // uint8_t
+#define LMG_CHP2_SP1_ClampHour                  466      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP1_ClampMinute                467      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP1_Kelvin                     468      // uint16_t
 #define LMG_CHP2_SP1_Brightness                 470      // uint8_t
 #define LMG_CHP2_SP1_ExtColorTempMode           471      // 8 Bits, Bit 7-0
@@ -674,12 +726,12 @@
 #define     LMG_CHP2_SP2_ActiveMask 0x80
 #define     LMG_CHP2_SP2_ActiveShift 7
 #define LMG_CHP2_SP2_AnchorType                 474      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP2_Hour                       475      // uint8_t
-#define LMG_CHP2_SP2_Minute                     476      // uint8_t
+#define LMG_CHP2_SP2_Hour                       475      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP2_Minute                     476      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP2_OffsetMinutes              477      // int16_t
 #define LMG_CHP2_SP2_ClampMode                  479      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP2_ClampHour                  480      // uint8_t
-#define LMG_CHP2_SP2_ClampMinute                481      // uint8_t
+#define LMG_CHP2_SP2_ClampHour                  480      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP2_ClampMinute                481      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP2_Kelvin                     482      // uint16_t
 #define LMG_CHP2_SP2_Brightness                 484      // uint8_t
 #define LMG_CHP2_SP2_ExtColorTempMode           485      // 8 Bits, Bit 7-0
@@ -688,12 +740,12 @@
 #define     LMG_CHP2_SP3_ActiveMask 0x80
 #define     LMG_CHP2_SP3_ActiveShift 7
 #define LMG_CHP2_SP3_AnchorType                 488      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP3_Hour                       489      // uint8_t
-#define LMG_CHP2_SP3_Minute                     490      // uint8_t
+#define LMG_CHP2_SP3_Hour                       489      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP3_Minute                     490      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP3_OffsetMinutes              491      // int16_t
 #define LMG_CHP2_SP3_ClampMode                  493      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP3_ClampHour                  494      // uint8_t
-#define LMG_CHP2_SP3_ClampMinute                495      // uint8_t
+#define LMG_CHP2_SP3_ClampHour                  494      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP3_ClampMinute                495      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP3_Kelvin                     496      // uint16_t
 #define LMG_CHP2_SP3_Brightness                 498      // uint8_t
 #define LMG_CHP2_SP3_ExtColorTempMode           499      // 8 Bits, Bit 7-0
@@ -702,12 +754,12 @@
 #define     LMG_CHP2_SP4_ActiveMask 0x80
 #define     LMG_CHP2_SP4_ActiveShift 7
 #define LMG_CHP2_SP4_AnchorType                 502      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP4_Hour                       503      // uint8_t
-#define LMG_CHP2_SP4_Minute                     504      // uint8_t
+#define LMG_CHP2_SP4_Hour                       503      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP4_Minute                     504      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP4_OffsetMinutes              505      // int16_t
 #define LMG_CHP2_SP4_ClampMode                  507      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP4_ClampHour                  508      // uint8_t
-#define LMG_CHP2_SP4_ClampMinute                509      // uint8_t
+#define LMG_CHP2_SP4_ClampHour                  508      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP4_ClampMinute                509      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP4_Kelvin                     510      // uint16_t
 #define LMG_CHP2_SP4_Brightness                 512      // uint8_t
 #define LMG_CHP2_SP4_ExtColorTempMode           513      // 8 Bits, Bit 7-0
@@ -716,12 +768,12 @@
 #define     LMG_CHP2_SP5_ActiveMask 0x80
 #define     LMG_CHP2_SP5_ActiveShift 7
 #define LMG_CHP2_SP5_AnchorType                 516      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP5_Hour                       517      // uint8_t
-#define LMG_CHP2_SP5_Minute                     518      // uint8_t
+#define LMG_CHP2_SP5_Hour                       517      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP5_Minute                     518      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP5_OffsetMinutes              519      // int16_t
 #define LMG_CHP2_SP5_ClampMode                  521      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP5_ClampHour                  522      // uint8_t
-#define LMG_CHP2_SP5_ClampMinute                523      // uint8_t
+#define LMG_CHP2_SP5_ClampHour                  522      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP5_ClampMinute                523      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP5_Kelvin                     524      // uint16_t
 #define LMG_CHP2_SP5_Brightness                 526      // uint8_t
 #define LMG_CHP2_SP5_ExtColorTempMode           527      // 8 Bits, Bit 7-0
@@ -730,12 +782,12 @@
 #define     LMG_CHP2_SP6_ActiveMask 0x80
 #define     LMG_CHP2_SP6_ActiveShift 7
 #define LMG_CHP2_SP6_AnchorType                 530      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP6_Hour                       531      // uint8_t
-#define LMG_CHP2_SP6_Minute                     532      // uint8_t
+#define LMG_CHP2_SP6_Hour                       531      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP6_Minute                     532      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP6_OffsetMinutes              533      // int16_t
 #define LMG_CHP2_SP6_ClampMode                  535      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP6_ClampHour                  536      // uint8_t
-#define LMG_CHP2_SP6_ClampMinute                537      // uint8_t
+#define LMG_CHP2_SP6_ClampHour                  536      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP6_ClampMinute                537      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP6_Kelvin                     538      // uint16_t
 #define LMG_CHP2_SP6_Brightness                 540      // uint8_t
 #define LMG_CHP2_SP6_ExtColorTempMode           541      // 8 Bits, Bit 7-0
@@ -744,12 +796,12 @@
 #define     LMG_CHP2_SP7_ActiveMask 0x80
 #define     LMG_CHP2_SP7_ActiveShift 7
 #define LMG_CHP2_SP7_AnchorType                 544      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP7_Hour                       545      // uint8_t
-#define LMG_CHP2_SP7_Minute                     546      // uint8_t
+#define LMG_CHP2_SP7_Hour                       545      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP7_Minute                     546      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP7_OffsetMinutes              547      // int16_t
 #define LMG_CHP2_SP7_ClampMode                  549      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP7_ClampHour                  550      // uint8_t
-#define LMG_CHP2_SP7_ClampMinute                551      // uint8_t
+#define LMG_CHP2_SP7_ClampHour                  550      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP7_ClampMinute                551      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP7_Kelvin                     552      // uint16_t
 #define LMG_CHP2_SP7_Brightness                 554      // uint8_t
 #define LMG_CHP2_SP7_ExtColorTempMode           555      // 8 Bits, Bit 7-0
@@ -758,12 +810,12 @@
 #define     LMG_CHP2_SP8_ActiveMask 0x80
 #define     LMG_CHP2_SP8_ActiveShift 7
 #define LMG_CHP2_SP8_AnchorType                 558      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP8_Hour                       559      // uint8_t
-#define LMG_CHP2_SP8_Minute                     560      // uint8_t
+#define LMG_CHP2_SP8_Hour                       559      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP8_Minute                     560      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP8_OffsetMinutes              561      // int16_t
 #define LMG_CHP2_SP8_ClampMode                  563      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP8_ClampHour                  564      // uint8_t
-#define LMG_CHP2_SP8_ClampMinute                565      // uint8_t
+#define LMG_CHP2_SP8_ClampHour                  564      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP8_ClampMinute                565      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP8_Kelvin                     566      // uint16_t
 #define LMG_CHP2_SP8_Brightness                 568      // uint8_t
 #define LMG_CHP2_SP8_ExtColorTempMode           569      // 8 Bits, Bit 7-0
@@ -772,12 +824,12 @@
 #define     LMG_CHP2_SP9_ActiveMask 0x80
 #define     LMG_CHP2_SP9_ActiveShift 7
 #define LMG_CHP2_SP9_AnchorType                 572      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP9_Hour                       573      // uint8_t
-#define LMG_CHP2_SP9_Minute                     574      // uint8_t
+#define LMG_CHP2_SP9_Hour                       573      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP9_Minute                     574      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP9_OffsetMinutes              575      // int16_t
 #define LMG_CHP2_SP9_ClampMode                  577      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP9_ClampHour                  578      // uint8_t
-#define LMG_CHP2_SP9_ClampMinute                579      // uint8_t
+#define LMG_CHP2_SP9_ClampHour                  578      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP9_ClampMinute                579      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP9_Kelvin                     580      // uint16_t
 #define LMG_CHP2_SP9_Brightness                 582      // uint8_t
 #define LMG_CHP2_SP9_ExtColorTempMode           583      // 8 Bits, Bit 7-0
@@ -786,12 +838,12 @@
 #define     LMG_CHP2_SP10_ActiveMask 0x80
 #define     LMG_CHP2_SP10_ActiveShift 7
 #define LMG_CHP2_SP10_AnchorType                586      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP10_Hour                      587      // uint8_t
-#define LMG_CHP2_SP10_Minute                    588      // uint8_t
+#define LMG_CHP2_SP10_Hour                      587      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP10_Minute                    588      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP10_OffsetMinutes             589      // int16_t
 #define LMG_CHP2_SP10_ClampMode                 591      // 8 Bits, Bit 7-0
-#define LMG_CHP2_SP10_ClampHour                 592      // uint8_t
-#define LMG_CHP2_SP10_ClampMinute               593      // uint8_t
+#define LMG_CHP2_SP10_ClampHour                 592      // 8 Bits, Bit 7-0
+#define LMG_CHP2_SP10_ClampMinute               593      // 8 Bits, Bit 7-0
 #define LMG_CHP2_SP10_Kelvin                    594      // uint16_t
 #define LMG_CHP2_SP10_Brightness                596      // uint8_t
 #define LMG_CHP2_SP10_ExtColorTempMode          597      // 8 Bits, Bit 7-0
@@ -800,12 +852,12 @@
 #define     LMG_CHP3_SP1_ActiveMask 0x80
 #define     LMG_CHP3_SP1_ActiveShift 7
 #define LMG_CHP3_SP1_AnchorType                 600      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP1_Hour                       601      // uint8_t
-#define LMG_CHP3_SP1_Minute                     602      // uint8_t
+#define LMG_CHP3_SP1_Hour                       601      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP1_Minute                     602      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP1_OffsetMinutes              603      // int16_t
 #define LMG_CHP3_SP1_ClampMode                  605      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP1_ClampHour                  606      // uint8_t
-#define LMG_CHP3_SP1_ClampMinute                607      // uint8_t
+#define LMG_CHP3_SP1_ClampHour                  606      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP1_ClampMinute                607      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP1_Kelvin                     608      // uint16_t
 #define LMG_CHP3_SP1_Brightness                 610      // uint8_t
 #define LMG_CHP3_SP1_ExtColorTempMode           611      // 8 Bits, Bit 7-0
@@ -814,12 +866,12 @@
 #define     LMG_CHP3_SP2_ActiveMask 0x80
 #define     LMG_CHP3_SP2_ActiveShift 7
 #define LMG_CHP3_SP2_AnchorType                 614      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP2_Hour                       615      // uint8_t
-#define LMG_CHP3_SP2_Minute                     616      // uint8_t
+#define LMG_CHP3_SP2_Hour                       615      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP2_Minute                     616      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP2_OffsetMinutes              617      // int16_t
 #define LMG_CHP3_SP2_ClampMode                  619      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP2_ClampHour                  620      // uint8_t
-#define LMG_CHP3_SP2_ClampMinute                621      // uint8_t
+#define LMG_CHP3_SP2_ClampHour                  620      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP2_ClampMinute                621      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP2_Kelvin                     622      // uint16_t
 #define LMG_CHP3_SP2_Brightness                 624      // uint8_t
 #define LMG_CHP3_SP2_ExtColorTempMode           625      // 8 Bits, Bit 7-0
@@ -828,12 +880,12 @@
 #define     LMG_CHP3_SP3_ActiveMask 0x80
 #define     LMG_CHP3_SP3_ActiveShift 7
 #define LMG_CHP3_SP3_AnchorType                 628      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP3_Hour                       629      // uint8_t
-#define LMG_CHP3_SP3_Minute                     630      // uint8_t
+#define LMG_CHP3_SP3_Hour                       629      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP3_Minute                     630      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP3_OffsetMinutes              631      // int16_t
 #define LMG_CHP3_SP3_ClampMode                  633      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP3_ClampHour                  634      // uint8_t
-#define LMG_CHP3_SP3_ClampMinute                635      // uint8_t
+#define LMG_CHP3_SP3_ClampHour                  634      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP3_ClampMinute                635      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP3_Kelvin                     636      // uint16_t
 #define LMG_CHP3_SP3_Brightness                 638      // uint8_t
 #define LMG_CHP3_SP3_ExtColorTempMode           639      // 8 Bits, Bit 7-0
@@ -842,12 +894,12 @@
 #define     LMG_CHP3_SP4_ActiveMask 0x80
 #define     LMG_CHP3_SP4_ActiveShift 7
 #define LMG_CHP3_SP4_AnchorType                 642      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP4_Hour                       643      // uint8_t
-#define LMG_CHP3_SP4_Minute                     644      // uint8_t
+#define LMG_CHP3_SP4_Hour                       643      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP4_Minute                     644      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP4_OffsetMinutes              645      // int16_t
 #define LMG_CHP3_SP4_ClampMode                  647      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP4_ClampHour                  648      // uint8_t
-#define LMG_CHP3_SP4_ClampMinute                649      // uint8_t
+#define LMG_CHP3_SP4_ClampHour                  648      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP4_ClampMinute                649      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP4_Kelvin                     650      // uint16_t
 #define LMG_CHP3_SP4_Brightness                 652      // uint8_t
 #define LMG_CHP3_SP4_ExtColorTempMode           653      // 8 Bits, Bit 7-0
@@ -856,12 +908,12 @@
 #define     LMG_CHP3_SP5_ActiveMask 0x80
 #define     LMG_CHP3_SP5_ActiveShift 7
 #define LMG_CHP3_SP5_AnchorType                 656      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP5_Hour                       657      // uint8_t
-#define LMG_CHP3_SP5_Minute                     658      // uint8_t
+#define LMG_CHP3_SP5_Hour                       657      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP5_Minute                     658      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP5_OffsetMinutes              659      // int16_t
 #define LMG_CHP3_SP5_ClampMode                  661      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP5_ClampHour                  662      // uint8_t
-#define LMG_CHP3_SP5_ClampMinute                663      // uint8_t
+#define LMG_CHP3_SP5_ClampHour                  662      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP5_ClampMinute                663      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP5_Kelvin                     664      // uint16_t
 #define LMG_CHP3_SP5_Brightness                 666      // uint8_t
 #define LMG_CHP3_SP5_ExtColorTempMode           667      // 8 Bits, Bit 7-0
@@ -870,12 +922,12 @@
 #define     LMG_CHP3_SP6_ActiveMask 0x80
 #define     LMG_CHP3_SP6_ActiveShift 7
 #define LMG_CHP3_SP6_AnchorType                 670      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP6_Hour                       671      // uint8_t
-#define LMG_CHP3_SP6_Minute                     672      // uint8_t
+#define LMG_CHP3_SP6_Hour                       671      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP6_Minute                     672      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP6_OffsetMinutes              673      // int16_t
 #define LMG_CHP3_SP6_ClampMode                  675      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP6_ClampHour                  676      // uint8_t
-#define LMG_CHP3_SP6_ClampMinute                677      // uint8_t
+#define LMG_CHP3_SP6_ClampHour                  676      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP6_ClampMinute                677      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP6_Kelvin                     678      // uint16_t
 #define LMG_CHP3_SP6_Brightness                 680      // uint8_t
 #define LMG_CHP3_SP6_ExtColorTempMode           681      // 8 Bits, Bit 7-0
@@ -884,12 +936,12 @@
 #define     LMG_CHP3_SP7_ActiveMask 0x80
 #define     LMG_CHP3_SP7_ActiveShift 7
 #define LMG_CHP3_SP7_AnchorType                 684      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP7_Hour                       685      // uint8_t
-#define LMG_CHP3_SP7_Minute                     686      // uint8_t
+#define LMG_CHP3_SP7_Hour                       685      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP7_Minute                     686      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP7_OffsetMinutes              687      // int16_t
 #define LMG_CHP3_SP7_ClampMode                  689      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP7_ClampHour                  690      // uint8_t
-#define LMG_CHP3_SP7_ClampMinute                691      // uint8_t
+#define LMG_CHP3_SP7_ClampHour                  690      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP7_ClampMinute                691      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP7_Kelvin                     692      // uint16_t
 #define LMG_CHP3_SP7_Brightness                 694      // uint8_t
 #define LMG_CHP3_SP7_ExtColorTempMode           695      // 8 Bits, Bit 7-0
@@ -898,12 +950,12 @@
 #define     LMG_CHP3_SP8_ActiveMask 0x80
 #define     LMG_CHP3_SP8_ActiveShift 7
 #define LMG_CHP3_SP8_AnchorType                 698      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP8_Hour                       699      // uint8_t
-#define LMG_CHP3_SP8_Minute                     700      // uint8_t
+#define LMG_CHP3_SP8_Hour                       699      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP8_Minute                     700      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP8_OffsetMinutes              701      // int16_t
 #define LMG_CHP3_SP8_ClampMode                  703      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP8_ClampHour                  704      // uint8_t
-#define LMG_CHP3_SP8_ClampMinute                705      // uint8_t
+#define LMG_CHP3_SP8_ClampHour                  704      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP8_ClampMinute                705      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP8_Kelvin                     706      // uint16_t
 #define LMG_CHP3_SP8_Brightness                 708      // uint8_t
 #define LMG_CHP3_SP8_ExtColorTempMode           709      // 8 Bits, Bit 7-0
@@ -912,12 +964,12 @@
 #define     LMG_CHP3_SP9_ActiveMask 0x80
 #define     LMG_CHP3_SP9_ActiveShift 7
 #define LMG_CHP3_SP9_AnchorType                 712      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP9_Hour                       713      // uint8_t
-#define LMG_CHP3_SP9_Minute                     714      // uint8_t
+#define LMG_CHP3_SP9_Hour                       713      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP9_Minute                     714      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP9_OffsetMinutes              715      // int16_t
 #define LMG_CHP3_SP9_ClampMode                  717      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP9_ClampHour                  718      // uint8_t
-#define LMG_CHP3_SP9_ClampMinute                719      // uint8_t
+#define LMG_CHP3_SP9_ClampHour                  718      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP9_ClampMinute                719      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP9_Kelvin                     720      // uint16_t
 #define LMG_CHP3_SP9_Brightness                 722      // uint8_t
 #define LMG_CHP3_SP9_ExtColorTempMode           723      // 8 Bits, Bit 7-0
@@ -926,12 +978,12 @@
 #define     LMG_CHP3_SP10_ActiveMask 0x80
 #define     LMG_CHP3_SP10_ActiveShift 7
 #define LMG_CHP3_SP10_AnchorType                726      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP10_Hour                      727      // uint8_t
-#define LMG_CHP3_SP10_Minute                    728      // uint8_t
+#define LMG_CHP3_SP10_Hour                      727      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP10_Minute                    728      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP10_OffsetMinutes             729      // int16_t
 #define LMG_CHP3_SP10_ClampMode                 731      // 8 Bits, Bit 7-0
-#define LMG_CHP3_SP10_ClampHour                 732      // uint8_t
-#define LMG_CHP3_SP10_ClampMinute               733      // uint8_t
+#define LMG_CHP3_SP10_ClampHour                 732      // 8 Bits, Bit 7-0
+#define LMG_CHP3_SP10_ClampMinute               733      // 8 Bits, Bit 7-0
 #define LMG_CHP3_SP10_Kelvin                    734      // uint16_t
 #define LMG_CHP3_SP10_Brightness                736      // uint8_t
 #define LMG_CHP3_SP10_ExtColorTempMode          737      // 8 Bits, Bit 7-0
@@ -940,12 +992,12 @@
 #define     LMG_CHP4_SP1_ActiveMask 0x80
 #define     LMG_CHP4_SP1_ActiveShift 7
 #define LMG_CHP4_SP1_AnchorType                 740      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP1_Hour                       741      // uint8_t
-#define LMG_CHP4_SP1_Minute                     742      // uint8_t
+#define LMG_CHP4_SP1_Hour                       741      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP1_Minute                     742      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP1_OffsetMinutes              743      // int16_t
 #define LMG_CHP4_SP1_ClampMode                  745      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP1_ClampHour                  746      // uint8_t
-#define LMG_CHP4_SP1_ClampMinute                747      // uint8_t
+#define LMG_CHP4_SP1_ClampHour                  746      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP1_ClampMinute                747      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP1_Kelvin                     748      // uint16_t
 #define LMG_CHP4_SP1_Brightness                 750      // uint8_t
 #define LMG_CHP4_SP1_ExtColorTempMode           751      // 8 Bits, Bit 7-0
@@ -954,12 +1006,12 @@
 #define     LMG_CHP4_SP2_ActiveMask 0x80
 #define     LMG_CHP4_SP2_ActiveShift 7
 #define LMG_CHP4_SP2_AnchorType                 754      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP2_Hour                       755      // uint8_t
-#define LMG_CHP4_SP2_Minute                     756      // uint8_t
+#define LMG_CHP4_SP2_Hour                       755      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP2_Minute                     756      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP2_OffsetMinutes              757      // int16_t
 #define LMG_CHP4_SP2_ClampMode                  759      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP2_ClampHour                  760      // uint8_t
-#define LMG_CHP4_SP2_ClampMinute                761      // uint8_t
+#define LMG_CHP4_SP2_ClampHour                  760      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP2_ClampMinute                761      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP2_Kelvin                     762      // uint16_t
 #define LMG_CHP4_SP2_Brightness                 764      // uint8_t
 #define LMG_CHP4_SP2_ExtColorTempMode           765      // 8 Bits, Bit 7-0
@@ -968,12 +1020,12 @@
 #define     LMG_CHP4_SP3_ActiveMask 0x80
 #define     LMG_CHP4_SP3_ActiveShift 7
 #define LMG_CHP4_SP3_AnchorType                 768      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP3_Hour                       769      // uint8_t
-#define LMG_CHP4_SP3_Minute                     770      // uint8_t
+#define LMG_CHP4_SP3_Hour                       769      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP3_Minute                     770      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP3_OffsetMinutes              771      // int16_t
 #define LMG_CHP4_SP3_ClampMode                  773      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP3_ClampHour                  774      // uint8_t
-#define LMG_CHP4_SP3_ClampMinute                775      // uint8_t
+#define LMG_CHP4_SP3_ClampHour                  774      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP3_ClampMinute                775      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP3_Kelvin                     776      // uint16_t
 #define LMG_CHP4_SP3_Brightness                 778      // uint8_t
 #define LMG_CHP4_SP3_ExtColorTempMode           779      // 8 Bits, Bit 7-0
@@ -982,12 +1034,12 @@
 #define     LMG_CHP4_SP4_ActiveMask 0x80
 #define     LMG_CHP4_SP4_ActiveShift 7
 #define LMG_CHP4_SP4_AnchorType                 782      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP4_Hour                       783      // uint8_t
-#define LMG_CHP4_SP4_Minute                     784      // uint8_t
+#define LMG_CHP4_SP4_Hour                       783      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP4_Minute                     784      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP4_OffsetMinutes              785      // int16_t
 #define LMG_CHP4_SP4_ClampMode                  787      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP4_ClampHour                  788      // uint8_t
-#define LMG_CHP4_SP4_ClampMinute                789      // uint8_t
+#define LMG_CHP4_SP4_ClampHour                  788      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP4_ClampMinute                789      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP4_Kelvin                     790      // uint16_t
 #define LMG_CHP4_SP4_Brightness                 792      // uint8_t
 #define LMG_CHP4_SP4_ExtColorTempMode           793      // 8 Bits, Bit 7-0
@@ -996,12 +1048,12 @@
 #define     LMG_CHP4_SP5_ActiveMask 0x80
 #define     LMG_CHP4_SP5_ActiveShift 7
 #define LMG_CHP4_SP5_AnchorType                 796      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP5_Hour                       797      // uint8_t
-#define LMG_CHP4_SP5_Minute                     798      // uint8_t
+#define LMG_CHP4_SP5_Hour                       797      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP5_Minute                     798      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP5_OffsetMinutes              799      // int16_t
 #define LMG_CHP4_SP5_ClampMode                  801      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP5_ClampHour                  802      // uint8_t
-#define LMG_CHP4_SP5_ClampMinute                803      // uint8_t
+#define LMG_CHP4_SP5_ClampHour                  802      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP5_ClampMinute                803      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP5_Kelvin                     804      // uint16_t
 #define LMG_CHP4_SP5_Brightness                 806      // uint8_t
 #define LMG_CHP4_SP5_ExtColorTempMode           807      // 8 Bits, Bit 7-0
@@ -1010,12 +1062,12 @@
 #define     LMG_CHP4_SP6_ActiveMask 0x80
 #define     LMG_CHP4_SP6_ActiveShift 7
 #define LMG_CHP4_SP6_AnchorType                 810      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP6_Hour                       811      // uint8_t
-#define LMG_CHP4_SP6_Minute                     812      // uint8_t
+#define LMG_CHP4_SP6_Hour                       811      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP6_Minute                     812      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP6_OffsetMinutes              813      // int16_t
 #define LMG_CHP4_SP6_ClampMode                  815      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP6_ClampHour                  816      // uint8_t
-#define LMG_CHP4_SP6_ClampMinute                817      // uint8_t
+#define LMG_CHP4_SP6_ClampHour                  816      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP6_ClampMinute                817      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP6_Kelvin                     818      // uint16_t
 #define LMG_CHP4_SP6_Brightness                 820      // uint8_t
 #define LMG_CHP4_SP6_ExtColorTempMode           821      // 8 Bits, Bit 7-0
@@ -1024,12 +1076,12 @@
 #define     LMG_CHP4_SP7_ActiveMask 0x80
 #define     LMG_CHP4_SP7_ActiveShift 7
 #define LMG_CHP4_SP7_AnchorType                 824      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP7_Hour                       825      // uint8_t
-#define LMG_CHP4_SP7_Minute                     826      // uint8_t
+#define LMG_CHP4_SP7_Hour                       825      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP7_Minute                     826      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP7_OffsetMinutes              827      // int16_t
 #define LMG_CHP4_SP7_ClampMode                  829      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP7_ClampHour                  830      // uint8_t
-#define LMG_CHP4_SP7_ClampMinute                831      // uint8_t
+#define LMG_CHP4_SP7_ClampHour                  830      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP7_ClampMinute                831      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP7_Kelvin                     832      // uint16_t
 #define LMG_CHP4_SP7_Brightness                 834      // uint8_t
 #define LMG_CHP4_SP7_ExtColorTempMode           835      // 8 Bits, Bit 7-0
@@ -1038,12 +1090,12 @@
 #define     LMG_CHP4_SP8_ActiveMask 0x80
 #define     LMG_CHP4_SP8_ActiveShift 7
 #define LMG_CHP4_SP8_AnchorType                 838      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP8_Hour                       839      // uint8_t
-#define LMG_CHP4_SP8_Minute                     840      // uint8_t
+#define LMG_CHP4_SP8_Hour                       839      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP8_Minute                     840      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP8_OffsetMinutes              841      // int16_t
 #define LMG_CHP4_SP8_ClampMode                  843      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP8_ClampHour                  844      // uint8_t
-#define LMG_CHP4_SP8_ClampMinute                845      // uint8_t
+#define LMG_CHP4_SP8_ClampHour                  844      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP8_ClampMinute                845      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP8_Kelvin                     846      // uint16_t
 #define LMG_CHP4_SP8_Brightness                 848      // uint8_t
 #define LMG_CHP4_SP8_ExtColorTempMode           849      // 8 Bits, Bit 7-0
@@ -1052,12 +1104,12 @@
 #define     LMG_CHP4_SP9_ActiveMask 0x80
 #define     LMG_CHP4_SP9_ActiveShift 7
 #define LMG_CHP4_SP9_AnchorType                 852      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP9_Hour                       853      // uint8_t
-#define LMG_CHP4_SP9_Minute                     854      // uint8_t
+#define LMG_CHP4_SP9_Hour                       853      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP9_Minute                     854      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP9_OffsetMinutes              855      // int16_t
 #define LMG_CHP4_SP9_ClampMode                  857      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP9_ClampHour                  858      // uint8_t
-#define LMG_CHP4_SP9_ClampMinute                859      // uint8_t
+#define LMG_CHP4_SP9_ClampHour                  858      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP9_ClampMinute                859      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP9_Kelvin                     860      // uint16_t
 #define LMG_CHP4_SP9_Brightness                 862      // uint8_t
 #define LMG_CHP4_SP9_ExtColorTempMode           863      // 8 Bits, Bit 7-0
@@ -1066,12 +1118,12 @@
 #define     LMG_CHP4_SP10_ActiveMask 0x80
 #define     LMG_CHP4_SP10_ActiveShift 7
 #define LMG_CHP4_SP10_AnchorType                866      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP10_Hour                      867      // uint8_t
-#define LMG_CHP4_SP10_Minute                    868      // uint8_t
+#define LMG_CHP4_SP10_Hour                      867      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP10_Minute                    868      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP10_OffsetMinutes             869      // int16_t
 #define LMG_CHP4_SP10_ClampMode                 871      // 8 Bits, Bit 7-0
-#define LMG_CHP4_SP10_ClampHour                 872      // uint8_t
-#define LMG_CHP4_SP10_ClampMinute               873      // uint8_t
+#define LMG_CHP4_SP10_ClampHour                 872      // 8 Bits, Bit 7-0
+#define LMG_CHP4_SP10_ClampMinute               873      // 8 Bits, Bit 7-0
 #define LMG_CHP4_SP10_Kelvin                    874      // uint16_t
 #define LMG_CHP4_SP10_Brightness                876      // uint8_t
 #define LMG_CHP4_SP10_ExtColorTempMode          877      // 8 Bits, Bit 7-0
@@ -1164,14 +1216,18 @@
 #define ParamLMG_CHExtKelvinMax                      (knx.paramWord(LMG_ParamCalcIndex(LMG_CHExtKelvinMax)))
 // Lux bei 100 % Helligkeit
 #define ParamLMG_CHExtLuxMax                         (knx.paramWord(LMG_ParamCalcIndex(LMG_CHExtLuxMax)))
-// Saison-Quelle
+// Saisonale Umschaltung
 #define ParamLMG_CHSeasonSource                      (knx.paramByte(LMG_ParamCalcIndex(LMG_CHSeasonSource)))
 // Saison-Offset
 #define ParamLMG_CHSeasonOffsetDays                  ((int8_t)knx.paramByte(LMG_ParamCalcIndex(LMG_CHSeasonOffsetDays)))
-// Sommer-Beginn (MM/TT)
-#define ParamLMG_CHSummerStart                       (knx.paramWord(LMG_ParamCalcIndex(LMG_CHSummerStart)))
-// Sommer-Ende (MM/TT)
-#define ParamLMG_CHSummerEnd                         (knx.paramWord(LMG_ParamCalcIndex(LMG_CHSummerEnd)))
+// Sommer-Beginn Monat
+#define ParamLMG_CHSummerStartMonth                  (knx.paramByte(LMG_ParamCalcIndex(LMG_CHSummerStartMonth)))
+// Sommer-Beginn Tag
+#define ParamLMG_CHSummerStartDay                    (knx.paramByte(LMG_ParamCalcIndex(LMG_CHSummerStartDay)))
+// Sommer-Ende Monat
+#define ParamLMG_CHSummerEndMonth                    (knx.paramByte(LMG_ParamCalcIndex(LMG_CHSummerEndMonth)))
+// Sommer-Ende Tag
+#define ParamLMG_CHSummerEndDay                      (knx.paramByte(LMG_ParamCalcIndex(LMG_CHSummerEndDay)))
 // Tag/Nacht-Slew verwenden
 #define ParamLMG_CHUseDayNightSlew                   ((bool)(knx.paramByte(LMG_ParamCalcIndex(LMG_CHUseDayNightSlew)) & LMG_CHUseDayNightSlewMask))
 // Slew Rate Tag
@@ -1280,6 +1336,14 @@
 #define ParamLMG_CHP4_DayUrl                         ((bool)(knx.paramByte(LMG_ParamCalcIndex(LMG_CHP4_DayUrl)) & LMG_CHP4_DayUrlMask))
 // Feiertag
 #define ParamLMG_CHP4_DayFei                         ((bool)(knx.paramByte(LMG_ParamCalcIndex(LMG_CHP4_DayFei)) & LMG_CHP4_DayFeiMask))
+// Saison
+#define ParamLMG_CHP1_SeasonFilter                   ((knx.paramByte(LMG_ParamCalcIndex(LMG_CHP1_SeasonFilter)) & LMG_CHP1_SeasonFilterMask) >> LMG_CHP1_SeasonFilterShift)
+// Saison
+#define ParamLMG_CHP2_SeasonFilter                   ((knx.paramByte(LMG_ParamCalcIndex(LMG_CHP2_SeasonFilter)) & LMG_CHP2_SeasonFilterMask) >> LMG_CHP2_SeasonFilterShift)
+// Saison
+#define ParamLMG_CHP3_SeasonFilter                   ((knx.paramByte(LMG_ParamCalcIndex(LMG_CHP3_SeasonFilter)) & LMG_CHP3_SeasonFilterMask) >> LMG_CHP3_SeasonFilterShift)
+// Saison
+#define ParamLMG_CHP4_SeasonFilter                   ((knx.paramByte(LMG_ParamCalcIndex(LMG_CHP4_SeasonFilter)) & LMG_CHP4_SeasonFilterMask) >> LMG_CHP4_SeasonFilterShift)
 // Profil 4 Stützpunkte
 #define ParamLMG_CHP4_SPCount                        (knx.paramByte(LMG_ParamCalcIndex(LMG_CHP4_SPCount)))
 // Profil 1 SP1 Active
@@ -2322,38 +2386,38 @@
 // reserved
 #define KoLMG_CHReserve2                          (knx.getGroupObject(LMG_KoCalcNumber(LMG_KoCHReserve2)))
 
-#define HUE_HUEBridgeMode                       15336      // 8 Bits, Bit 7-0
-#define HUE_HUEBridgeIP                         15337      // IP address, 4 Byte
-#define HUE_HUEResetAuth                        15362      // 1 Bit, Bit 7
+#define HUE_HUEBridgeMode                       15423      // 8 Bits, Bit 7-0
+#define HUE_HUEBridgeIP                         15424      // IP address, 4 Byte
+#define HUE_HUEResetAuth                        15449      // 1 Bit, Bit 7
 #define     HUE_HUEResetAuthMask 0x80
 #define     HUE_HUEResetAuthShift 7
-#define HUE_HUEShowConnectionStatus             15362      // 1 Bit, Bit 6
+#define HUE_HUEShowConnectionStatus             15449      // 1 Bit, Bit 6
 #define     HUE_HUEShowConnectionStatusMask 0x40
 #define     HUE_HUEShowConnectionStatusShift 6
-#define HUE_HUEPairingWindow                    15366      // uint8_t
-#define HUE_HUESwitchOnTransitionSec            16372      // uint8_t
-#define HUE_HUESwitchOffTransitionSec           16373      // uint8_t
-#define HUE_HUEChannelCount                     15365      // uint8_t
-#define HUE_HUEHueScene1RID                     16729      // char*, 40 Byte
+#define HUE_HUEPairingWindow                    15453      // uint8_t
+#define HUE_HUESwitchOnTransitionSec            16459      // uint8_t
+#define HUE_HUESwitchOffTransitionSec           16460      // uint8_t
+#define HUE_HUEChannelCount                     15452      // uint8_t
+#define HUE_HUEHueScene1RID                     16816      // char*, 40 Byte
 #define     HUE_HUEHueScene1RIDLength 40
-#define HUE_HUEHueScene2RID                     16769      // char*, 40 Byte
+#define HUE_HUEHueScene2RID                     16856      // char*, 40 Byte
 #define     HUE_HUEHueScene2RIDLength 40
-#define HUE_HUEHueScene3RID                     16809      // char*, 40 Byte
+#define HUE_HUEHueScene3RID                     16896      // char*, 40 Byte
 #define     HUE_HUEHueScene3RIDLength 40
-#define HUE_HUEHueScene4RID                     16849      // char*, 40 Byte
+#define HUE_HUEHueScene4RID                     16936      // char*, 40 Byte
 #define     HUE_HUEHueScene4RIDLength 40
-#define HUE_HUEHueScene5RID                     16889      // char*, 40 Byte
+#define HUE_HUEHueScene5RID                     16976      // char*, 40 Byte
 #define     HUE_HUEHueScene5RIDLength 40
-#define HUE_HUEHueScene6RID                     16929      // char*, 40 Byte
+#define HUE_HUEHueScene6RID                     17016      // char*, 40 Byte
 #define     HUE_HUEHueScene6RIDLength 40
-#define HUE_HUEHueScene7RID                     16969      // char*, 40 Byte
+#define HUE_HUEHueScene7RID                     17056      // char*, 40 Byte
 #define     HUE_HUEHueScene7RIDLength 40
-#define HUE_HUEHueScene8RID                     17009      // char*, 40 Byte
+#define HUE_HUEHueScene8RID                     17096      // char*, 40 Byte
 #define     HUE_HUEHueScene8RIDLength 40
-#define HUE_HUEScenesEnable                     17049      // 1 Bit, Bit 7
+#define HUE_HUEScenesEnable                     17136      // 1 Bit, Bit 7
 #define     HUE_HUEScenesEnableMask 0x80
 #define     HUE_HUEScenesEnableShift 7
-#define HUE_HUERelDimRepeatMs                   17050      // uint16_t
+#define HUE_HUERelDimRepeatMs                   17137      // uint16_t
 
 // Bridge Erkennung
 #define ParamHUE_HUEBridgeMode                       (knx.paramByte(HUE_HUEBridgeMode))
@@ -2411,10 +2475,12 @@
 #define HUE_ChannelCount 32
 
 // Parameter per channel
-#define HUE_ParamBlockOffset 17052
-#define HUE_ParamBlockSize 184
+#define HUE_ParamBlockOffset 17139
+#define HUE_ParamBlockSize 224
 #define HUE_ParamCalcIndex(index) (index + HUE_ParamBlockOffset + _channelIndex * HUE_ParamBlockSize)
 
+#define HUE_CHName                              184      // char*, 40 Byte
+#define     HUE_CHNameLength 40
 #define HUE_CHLightUUID                          5      // char*, 40 Byte
 #define     HUE_CHLightUUIDLength 40
 #define HUE_CHTargetRID                         45      // char*, 40 Byte
@@ -2747,6 +2813,9 @@
 #define     HUE_CHNativeHueActionMask 0x80
 #define     HUE_CHNativeHueActionShift 7
 
+// Bezeichnung
+#define ParamHUE_CHName                              (knx.paramData(HUE_ParamCalcIndex(HUE_CHName)))
+#define ParamHUE_CHNameStr                           (knx.paramString(HUE_ParamCalcIndex(HUE_CHName), HUE_CHNameLength))
 // Hue Lampen-ID (UUID)
 #define ParamHUE_CHLightUUID                         (knx.paramData(HUE_ParamCalcIndex(HUE_CHLightUUID)))
 #define ParamHUE_CHLightUUIDStr                      (knx.paramString(HUE_ParamCalcIndex(HUE_CHLightUUID), HUE_CHLightUUIDLength))
@@ -3197,272 +3266,272 @@
 // Szene
 #define KoHUE_CHScene                             (knx.getGroupObject(HUE_KoCalcNumber(HUE_KoCHScene)))
 
-#define LOG_VisibleChannels                     22940      // uint8_t
-#define LOG_VacationKo                          22941      // 1 Bit, Bit 7
+#define LOG_VisibleChannels                     24307      // uint8_t
+#define LOG_VacationKo                          24308      // 1 Bit, Bit 7
 #define     LOG_VacationKoMask 0x80
 #define     LOG_VacationKoShift 7
-#define LOG_HolidayKo                           22941      // 1 Bit, Bit 6
+#define LOG_HolidayKo                           24308      // 1 Bit, Bit 6
 #define     LOG_HolidayKoMask 0x40
 #define     LOG_HolidayKoShift 6
-#define LOG_VacationRead                        22941      // 1 Bit, Bit 5
+#define LOG_VacationRead                        24308      // 1 Bit, Bit 5
 #define     LOG_VacationReadMask 0x20
 #define     LOG_VacationReadShift 5
-#define LOG_HolidaySend                         22941      // 1 Bit, Bit 4
+#define LOG_HolidaySend                         24308      // 1 Bit, Bit 4
 #define     LOG_HolidaySendMask 0x10
 #define     LOG_HolidaySendShift 4
-#define LOG_Neujahr                             22942      // 1 Bit, Bit 7
+#define LOG_Neujahr                             24309      // 1 Bit, Bit 7
 #define     LOG_NeujahrMask 0x80
 #define     LOG_NeujahrShift 7
-#define LOG_DreiKoenige                         22942      // 1 Bit, Bit 6
+#define LOG_DreiKoenige                         24309      // 1 Bit, Bit 6
 #define     LOG_DreiKoenigeMask 0x40
 #define     LOG_DreiKoenigeShift 6
-#define LOG_Weiberfastnacht                     22942      // 1 Bit, Bit 5
+#define LOG_Weiberfastnacht                     24309      // 1 Bit, Bit 5
 #define     LOG_WeiberfastnachtMask 0x20
 #define     LOG_WeiberfastnachtShift 5
-#define LOG_Rosenmontag                         22942      // 1 Bit, Bit 4
+#define LOG_Rosenmontag                         24309      // 1 Bit, Bit 4
 #define     LOG_RosenmontagMask 0x10
 #define     LOG_RosenmontagShift 4
-#define LOG_Fastnachtsdienstag                  22942      // 1 Bit, Bit 3
+#define LOG_Fastnachtsdienstag                  24309      // 1 Bit, Bit 3
 #define     LOG_FastnachtsdienstagMask 0x08
 #define     LOG_FastnachtsdienstagShift 3
-#define LOG_Aschermittwoch                      22942      // 1 Bit, Bit 2
+#define LOG_Aschermittwoch                      24309      // 1 Bit, Bit 2
 #define     LOG_AschermittwochMask 0x04
 #define     LOG_AschermittwochShift 2
-#define LOG_Frauentag                           22942      // 1 Bit, Bit 1
+#define LOG_Frauentag                           24309      // 1 Bit, Bit 1
 #define     LOG_FrauentagMask 0x02
 #define     LOG_FrauentagShift 1
-#define LOG_Gruendonnerstag                     22942      // 1 Bit, Bit 0
+#define LOG_Gruendonnerstag                     24309      // 1 Bit, Bit 0
 #define     LOG_GruendonnerstagMask 0x01
 #define     LOG_GruendonnerstagShift 0
-#define LOG_Karfreitag                          22943      // 1 Bit, Bit 7
+#define LOG_Karfreitag                          24310      // 1 Bit, Bit 7
 #define     LOG_KarfreitagMask 0x80
 #define     LOG_KarfreitagShift 7
-#define LOG_Ostersonntag                        22943      // 1 Bit, Bit 6
+#define LOG_Ostersonntag                        24310      // 1 Bit, Bit 6
 #define     LOG_OstersonntagMask 0x40
 #define     LOG_OstersonntagShift 6
-#define LOG_Ostermontag                         22943      // 1 Bit, Bit 5
+#define LOG_Ostermontag                         24310      // 1 Bit, Bit 5
 #define     LOG_OstermontagMask 0x20
 #define     LOG_OstermontagShift 5
-#define LOG_TagDerArbeit                        22943      // 1 Bit, Bit 4
+#define LOG_TagDerArbeit                        24310      // 1 Bit, Bit 4
 #define     LOG_TagDerArbeitMask 0x10
 #define     LOG_TagDerArbeitShift 4
-#define LOG_Himmelfahrt                         22943      // 1 Bit, Bit 3
+#define LOG_Himmelfahrt                         24310      // 1 Bit, Bit 3
 #define     LOG_HimmelfahrtMask 0x08
 #define     LOG_HimmelfahrtShift 3
-#define LOG_Pfingstsonntag                      22943      // 1 Bit, Bit 2
+#define LOG_Pfingstsonntag                      24310      // 1 Bit, Bit 2
 #define     LOG_PfingstsonntagMask 0x04
 #define     LOG_PfingstsonntagShift 2
-#define LOG_Pfingstmontag                       22943      // 1 Bit, Bit 1
+#define LOG_Pfingstmontag                       24310      // 1 Bit, Bit 1
 #define     LOG_PfingstmontagMask 0x02
 #define     LOG_PfingstmontagShift 1
-#define LOG_Fronleichnam                        22943      // 1 Bit, Bit 0
+#define LOG_Fronleichnam                        24310      // 1 Bit, Bit 0
 #define     LOG_FronleichnamMask 0x01
 #define     LOG_FronleichnamShift 0
-#define LOG_Friedensfest                        22944      // 1 Bit, Bit 7
+#define LOG_Friedensfest                        24311      // 1 Bit, Bit 7
 #define     LOG_FriedensfestMask 0x80
 #define     LOG_FriedensfestShift 7
-#define LOG_MariaHimmelfahrt                    22944      // 1 Bit, Bit 6
+#define LOG_MariaHimmelfahrt                    24311      // 1 Bit, Bit 6
 #define     LOG_MariaHimmelfahrtMask 0x40
 #define     LOG_MariaHimmelfahrtShift 6
-#define LOG_DeutscheEinheit                     22944      // 1 Bit, Bit 5
+#define LOG_DeutscheEinheit                     24311      // 1 Bit, Bit 5
 #define     LOG_DeutscheEinheitMask 0x20
 #define     LOG_DeutscheEinheitShift 5
-#define LOG_Reformationstag                     22944      // 1 Bit, Bit 4
+#define LOG_Reformationstag                     24311      // 1 Bit, Bit 4
 #define     LOG_ReformationstagMask 0x10
 #define     LOG_ReformationstagShift 4
-#define LOG_Allerheiligen                       22944      // 1 Bit, Bit 3
+#define LOG_Allerheiligen                       24311      // 1 Bit, Bit 3
 #define     LOG_AllerheiligenMask 0x08
 #define     LOG_AllerheiligenShift 3
-#define LOG_BussBettag                          22944      // 1 Bit, Bit 2
+#define LOG_BussBettag                          24311      // 1 Bit, Bit 2
 #define     LOG_BussBettagMask 0x04
 #define     LOG_BussBettagShift 2
-#define LOG_Advent1                             22944      // 1 Bit, Bit 1
+#define LOG_Advent1                             24311      // 1 Bit, Bit 1
 #define     LOG_Advent1Mask 0x02
 #define     LOG_Advent1Shift 1
-#define LOG_Advent2                             22944      // 1 Bit, Bit 0
+#define LOG_Advent2                             24311      // 1 Bit, Bit 0
 #define     LOG_Advent2Mask 0x01
 #define     LOG_Advent2Shift 0
-#define LOG_Advent3                             22945      // 1 Bit, Bit 7
+#define LOG_Advent3                             24312      // 1 Bit, Bit 7
 #define     LOG_Advent3Mask 0x80
 #define     LOG_Advent3Shift 7
-#define LOG_Advent4                             22945      // 1 Bit, Bit 6
+#define LOG_Advent4                             24312      // 1 Bit, Bit 6
 #define     LOG_Advent4Mask 0x40
 #define     LOG_Advent4Shift 6
-#define LOG_Heiligabend                         22945      // 1 Bit, Bit 5
+#define LOG_Heiligabend                         24312      // 1 Bit, Bit 5
 #define     LOG_HeiligabendMask 0x20
 #define     LOG_HeiligabendShift 5
-#define LOG_Weihnachtstag1                      22945      // 1 Bit, Bit 4
+#define LOG_Weihnachtstag1                      24312      // 1 Bit, Bit 4
 #define     LOG_Weihnachtstag1Mask 0x10
 #define     LOG_Weihnachtstag1Shift 4
-#define LOG_Weihnachtstag2                      22945      // 1 Bit, Bit 3
+#define LOG_Weihnachtstag2                      24312      // 1 Bit, Bit 3
 #define     LOG_Weihnachtstag2Mask 0x08
 #define     LOG_Weihnachtstag2Shift 3
-#define LOG_Silvester                           22945      // 1 Bit, Bit 2
+#define LOG_Silvester                           24312      // 1 Bit, Bit 2
 #define     LOG_SilvesterMask 0x04
 #define     LOG_SilvesterShift 2
-#define LOG_Nationalfeiertag                    22945      // 1 Bit, Bit 1
+#define LOG_Nationalfeiertag                    24312      // 1 Bit, Bit 1
 #define     LOG_NationalfeiertagMask 0x02
 #define     LOG_NationalfeiertagShift 1
-#define LOG_MariaEmpfaengnis                    22945      // 1 Bit, Bit 0
+#define LOG_MariaEmpfaengnis                    24312      // 1 Bit, Bit 0
 #define     LOG_MariaEmpfaengnisMask 0x01
 #define     LOG_MariaEmpfaengnisShift 0
-#define LOG_NationalfeiertagSchweiz             22946      // 1 Bit, Bit 7
+#define LOG_NationalfeiertagSchweiz             24313      // 1 Bit, Bit 7
 #define     LOG_NationalfeiertagSchweizMask 0x80
 #define     LOG_NationalfeiertagSchweizShift 7
-#define LOG_Totensonntag                        22946      // 1 Bit, Bit 6
+#define LOG_Totensonntag                        24313      // 1 Bit, Bit 6
 #define     LOG_TotensonntagMask 0x40
 #define     LOG_TotensonntagShift 6
-#define LOG_Weltkindertag                       22946      // 1 Bit, Bit 5
+#define LOG_Weltkindertag                       24313      // 1 Bit, Bit 5
 #define     LOG_WeltkindertagMask 0x20
 #define     LOG_WeltkindertagShift 5
-#define LOG_UserFormula1                        22947      // char*, 99 Byte
+#define LOG_UserFormula1                        24314      // char*, 99 Byte
 #define     LOG_UserFormula1Length 99
-#define LOG_UserFormula1Active                  23046      // 1 Bit, Bit 7
+#define LOG_UserFormula1Active                  24413      // 1 Bit, Bit 7
 #define     LOG_UserFormula1ActiveMask 0x80
 #define     LOG_UserFormula1ActiveShift 7
-#define LOG_UserFormula2                        23047      // char*, 99 Byte
+#define LOG_UserFormula2                        24414      // char*, 99 Byte
 #define     LOG_UserFormula2Length 99
-#define LOG_UserFormula2Active                  23146      // 1 Bit, Bit 7
+#define LOG_UserFormula2Active                  24513      // 1 Bit, Bit 7
 #define     LOG_UserFormula2ActiveMask 0x80
 #define     LOG_UserFormula2ActiveShift 7
-#define LOG_UserFormula3                        23147      // char*, 99 Byte
+#define LOG_UserFormula3                        24514      // char*, 99 Byte
 #define     LOG_UserFormula3Length 99
-#define LOG_UserFormula3Active                  23246      // 1 Bit, Bit 7
+#define LOG_UserFormula3Active                  24613      // 1 Bit, Bit 7
 #define     LOG_UserFormula3ActiveMask 0x80
 #define     LOG_UserFormula3ActiveShift 7
-#define LOG_UserFormula4                        23247      // char*, 99 Byte
+#define LOG_UserFormula4                        24614      // char*, 99 Byte
 #define     LOG_UserFormula4Length 99
-#define LOG_UserFormula4Active                  23346      // 1 Bit, Bit 7
+#define LOG_UserFormula4Active                  24713      // 1 Bit, Bit 7
 #define     LOG_UserFormula4ActiveMask 0x80
 #define     LOG_UserFormula4ActiveShift 7
-#define LOG_UserFormula5                        23347      // char*, 99 Byte
+#define LOG_UserFormula5                        24714      // char*, 99 Byte
 #define     LOG_UserFormula5Length 99
-#define LOG_UserFormula5Active                  23446      // 1 Bit, Bit 7
+#define LOG_UserFormula5Active                  24813      // 1 Bit, Bit 7
 #define     LOG_UserFormula5ActiveMask 0x80
 #define     LOG_UserFormula5ActiveShift 7
-#define LOG_UserFormula6                        23447      // char*, 99 Byte
+#define LOG_UserFormula6                        24814      // char*, 99 Byte
 #define     LOG_UserFormula6Length 99
-#define LOG_UserFormula6Active                  23546      // 1 Bit, Bit 7
+#define LOG_UserFormula6Active                  24913      // 1 Bit, Bit 7
 #define     LOG_UserFormula6ActiveMask 0x80
 #define     LOG_UserFormula6ActiveShift 7
-#define LOG_UserFormula7                        23547      // char*, 99 Byte
+#define LOG_UserFormula7                        24914      // char*, 99 Byte
 #define     LOG_UserFormula7Length 99
-#define LOG_UserFormula7Active                  23646      // 1 Bit, Bit 7
+#define LOG_UserFormula7Active                  25013      // 1 Bit, Bit 7
 #define     LOG_UserFormula7ActiveMask 0x80
 #define     LOG_UserFormula7ActiveShift 7
-#define LOG_UserFormula8                        23647      // char*, 99 Byte
+#define LOG_UserFormula8                        25014      // char*, 99 Byte
 #define     LOG_UserFormula8Length 99
-#define LOG_UserFormula8Active                  23746      // 1 Bit, Bit 7
+#define LOG_UserFormula8Active                  25113      // 1 Bit, Bit 7
 #define     LOG_UserFormula8ActiveMask 0x80
 #define     LOG_UserFormula8ActiveShift 7
-#define LOG_UserFormula9                        23747      // char*, 99 Byte
+#define LOG_UserFormula9                        25114      // char*, 99 Byte
 #define     LOG_UserFormula9Length 99
-#define LOG_UserFormula9Active                  23846      // 1 Bit, Bit 7
+#define LOG_UserFormula9Active                  25213      // 1 Bit, Bit 7
 #define     LOG_UserFormula9ActiveMask 0x80
 #define     LOG_UserFormula9ActiveShift 7
-#define LOG_UserFormula10                       23847      // char*, 99 Byte
+#define LOG_UserFormula10                       25214      // char*, 99 Byte
 #define     LOG_UserFormula10Length 99
-#define LOG_UserFormula10Active                 23946      // 1 Bit, Bit 7
+#define LOG_UserFormula10Active                 25313      // 1 Bit, Bit 7
 #define     LOG_UserFormula10ActiveMask 0x80
 #define     LOG_UserFormula10ActiveShift 7
-#define LOG_UserFormula11                       23947      // char*, 99 Byte
+#define LOG_UserFormula11                       25314      // char*, 99 Byte
 #define     LOG_UserFormula11Length 99
-#define LOG_UserFormula11Active                 24046      // 1 Bit, Bit 7
+#define LOG_UserFormula11Active                 25413      // 1 Bit, Bit 7
 #define     LOG_UserFormula11ActiveMask 0x80
 #define     LOG_UserFormula11ActiveShift 7
-#define LOG_UserFormula12                       24047      // char*, 99 Byte
+#define LOG_UserFormula12                       25414      // char*, 99 Byte
 #define     LOG_UserFormula12Length 99
-#define LOG_UserFormula12Active                 24146      // 1 Bit, Bit 7
+#define LOG_UserFormula12Active                 25513      // 1 Bit, Bit 7
 #define     LOG_UserFormula12ActiveMask 0x80
 #define     LOG_UserFormula12ActiveShift 7
-#define LOG_UserFormula13                       24147      // char*, 99 Byte
+#define LOG_UserFormula13                       25514      // char*, 99 Byte
 #define     LOG_UserFormula13Length 99
-#define LOG_UserFormula13Active                 24246      // 1 Bit, Bit 7
+#define LOG_UserFormula13Active                 25613      // 1 Bit, Bit 7
 #define     LOG_UserFormula13ActiveMask 0x80
 #define     LOG_UserFormula13ActiveShift 7
-#define LOG_UserFormula14                       24247      // char*, 99 Byte
+#define LOG_UserFormula14                       25614      // char*, 99 Byte
 #define     LOG_UserFormula14Length 99
-#define LOG_UserFormula14Active                 24346      // 1 Bit, Bit 7
+#define LOG_UserFormula14Active                 25713      // 1 Bit, Bit 7
 #define     LOG_UserFormula14ActiveMask 0x80
 #define     LOG_UserFormula14ActiveShift 7
-#define LOG_UserFormula15                       24347      // char*, 99 Byte
+#define LOG_UserFormula15                       25714      // char*, 99 Byte
 #define     LOG_UserFormula15Length 99
-#define LOG_UserFormula15Active                 24446      // 1 Bit, Bit 7
+#define LOG_UserFormula15Active                 25813      // 1 Bit, Bit 7
 #define     LOG_UserFormula15ActiveMask 0x80
 #define     LOG_UserFormula15ActiveShift 7
-#define LOG_UserFormula16                       24447      // char*, 99 Byte
+#define LOG_UserFormula16                       25814      // char*, 99 Byte
 #define     LOG_UserFormula16Length 99
-#define LOG_UserFormula16Active                 24546      // 1 Bit, Bit 7
+#define LOG_UserFormula16Active                 25913      // 1 Bit, Bit 7
 #define     LOG_UserFormula16ActiveMask 0x80
 #define     LOG_UserFormula16ActiveShift 7
-#define LOG_UserFormula17                       24547      // char*, 99 Byte
+#define LOG_UserFormula17                       25914      // char*, 99 Byte
 #define     LOG_UserFormula17Length 99
-#define LOG_UserFormula17Active                 24646      // 1 Bit, Bit 7
+#define LOG_UserFormula17Active                 26013      // 1 Bit, Bit 7
 #define     LOG_UserFormula17ActiveMask 0x80
 #define     LOG_UserFormula17ActiveShift 7
-#define LOG_UserFormula18                       24647      // char*, 99 Byte
+#define LOG_UserFormula18                       26014      // char*, 99 Byte
 #define     LOG_UserFormula18Length 99
-#define LOG_UserFormula18Active                 24746      // 1 Bit, Bit 7
+#define LOG_UserFormula18Active                 26113      // 1 Bit, Bit 7
 #define     LOG_UserFormula18ActiveMask 0x80
 #define     LOG_UserFormula18ActiveShift 7
-#define LOG_UserFormula19                       24747      // char*, 99 Byte
+#define LOG_UserFormula19                       26114      // char*, 99 Byte
 #define     LOG_UserFormula19Length 99
-#define LOG_UserFormula19Active                 24846      // 1 Bit, Bit 7
+#define LOG_UserFormula19Active                 26213      // 1 Bit, Bit 7
 #define     LOG_UserFormula19ActiveMask 0x80
 #define     LOG_UserFormula19ActiveShift 7
-#define LOG_UserFormula20                       24847      // char*, 99 Byte
+#define LOG_UserFormula20                       26214      // char*, 99 Byte
 #define     LOG_UserFormula20Length 99
-#define LOG_UserFormula20Active                 24946      // 1 Bit, Bit 7
+#define LOG_UserFormula20Active                 26313      // 1 Bit, Bit 7
 #define     LOG_UserFormula20ActiveMask 0x80
 #define     LOG_UserFormula20ActiveShift 7
-#define LOG_UserFormula21                       24947      // char*, 99 Byte
+#define LOG_UserFormula21                       26314      // char*, 99 Byte
 #define     LOG_UserFormula21Length 99
-#define LOG_UserFormula21Active                 25046      // 1 Bit, Bit 7
+#define LOG_UserFormula21Active                 26413      // 1 Bit, Bit 7
 #define     LOG_UserFormula21ActiveMask 0x80
 #define     LOG_UserFormula21ActiveShift 7
-#define LOG_UserFormula22                       25047      // char*, 99 Byte
+#define LOG_UserFormula22                       26414      // char*, 99 Byte
 #define     LOG_UserFormula22Length 99
-#define LOG_UserFormula22Active                 25146      // 1 Bit, Bit 7
+#define LOG_UserFormula22Active                 26513      // 1 Bit, Bit 7
 #define     LOG_UserFormula22ActiveMask 0x80
 #define     LOG_UserFormula22ActiveShift 7
-#define LOG_UserFormula23                       25147      // char*, 99 Byte
+#define LOG_UserFormula23                       26514      // char*, 99 Byte
 #define     LOG_UserFormula23Length 99
-#define LOG_UserFormula23Active                 25246      // 1 Bit, Bit 7
+#define LOG_UserFormula23Active                 26613      // 1 Bit, Bit 7
 #define     LOG_UserFormula23ActiveMask 0x80
 #define     LOG_UserFormula23ActiveShift 7
-#define LOG_UserFormula24                       25247      // char*, 99 Byte
+#define LOG_UserFormula24                       26614      // char*, 99 Byte
 #define     LOG_UserFormula24Length 99
-#define LOG_UserFormula24Active                 25346      // 1 Bit, Bit 7
+#define LOG_UserFormula24Active                 26713      // 1 Bit, Bit 7
 #define     LOG_UserFormula24ActiveMask 0x80
 #define     LOG_UserFormula24ActiveShift 7
-#define LOG_UserFormula25                       25347      // char*, 99 Byte
+#define LOG_UserFormula25                       26714      // char*, 99 Byte
 #define     LOG_UserFormula25Length 99
-#define LOG_UserFormula25Active                 25446      // 1 Bit, Bit 7
+#define LOG_UserFormula25Active                 26813      // 1 Bit, Bit 7
 #define     LOG_UserFormula25ActiveMask 0x80
 #define     LOG_UserFormula25ActiveShift 7
-#define LOG_UserFormula26                       25447      // char*, 99 Byte
+#define LOG_UserFormula26                       26814      // char*, 99 Byte
 #define     LOG_UserFormula26Length 99
-#define LOG_UserFormula26Active                 25546      // 1 Bit, Bit 7
+#define LOG_UserFormula26Active                 26913      // 1 Bit, Bit 7
 #define     LOG_UserFormula26ActiveMask 0x80
 #define     LOG_UserFormula26ActiveShift 7
-#define LOG_UserFormula27                       25547      // char*, 99 Byte
+#define LOG_UserFormula27                       26914      // char*, 99 Byte
 #define     LOG_UserFormula27Length 99
-#define LOG_UserFormula27Active                 25646      // 1 Bit, Bit 7
+#define LOG_UserFormula27Active                 27013      // 1 Bit, Bit 7
 #define     LOG_UserFormula27ActiveMask 0x80
 #define     LOG_UserFormula27ActiveShift 7
-#define LOG_UserFormula28                       25647      // char*, 99 Byte
+#define LOG_UserFormula28                       27014      // char*, 99 Byte
 #define     LOG_UserFormula28Length 99
-#define LOG_UserFormula28Active                 25746      // 1 Bit, Bit 7
+#define LOG_UserFormula28Active                 27113      // 1 Bit, Bit 7
 #define     LOG_UserFormula28ActiveMask 0x80
 #define     LOG_UserFormula28ActiveShift 7
-#define LOG_UserFormula29                       25747      // char*, 99 Byte
+#define LOG_UserFormula29                       27114      // char*, 99 Byte
 #define     LOG_UserFormula29Length 99
-#define LOG_UserFormula29Active                 25846      // 1 Bit, Bit 7
+#define LOG_UserFormula29Active                 27213      // 1 Bit, Bit 7
 #define     LOG_UserFormula29ActiveMask 0x80
 #define     LOG_UserFormula29ActiveShift 7
-#define LOG_UserFormula30                       25847      // char*, 99 Byte
+#define LOG_UserFormula30                       27214      // char*, 99 Byte
 #define     LOG_UserFormula30Length 99
-#define LOG_UserFormula30Active                 25946      // 1 Bit, Bit 7
+#define LOG_UserFormula30Active                 27313      // 1 Bit, Bit 7
 #define     LOG_UserFormula30ActiveMask 0x80
 #define     LOG_UserFormula30ActiveShift 7
 
@@ -3711,7 +3780,7 @@
 #define LOG_ChannelCount 50
 
 // Parameter per channel
-#define LOG_ParamBlockOffset 25947
+#define LOG_ParamBlockOffset 27314
 #define LOG_ParamBlockSize 89
 #define LOG_ParamCalcIndex(index) (index + LOG_ParamBlockOffset + _channelIndex * LOG_ParamBlockSize)
 
@@ -5616,7 +5685,7 @@
 // Ausgang
 #define KoLOG_KOfO                                (knx.getGroupObject(LOG_KoCalcNumber(LOG_KoKOfO)))
 
-#define FCB_VisibleChannels                     30397      // uint8_t
+#define FCB_VisibleChannels                     31764      // uint8_t
 
 // Verfügbare Kanäle
 #define ParamFCB_VisibleChannels                     (knx.paramByte(FCB_VisibleChannels))
@@ -5624,7 +5693,7 @@
 #define FCB_ChannelCount 15
 
 // Parameter per channel
-#define FCB_ParamBlockOffset 30398
+#define FCB_ParamBlockOffset 31765
 #define FCB_ParamBlockSize 81
 #define FCB_ParamCalcIndex(index) (index + FCB_ParamBlockOffset + _channelIndex * FCB_ParamBlockSize)
 
@@ -6696,7 +6765,7 @@
 #define BASE_KommentarModuleModuleParamSize 0
 #define BASE_KommentarModuleSubmodulesParamSize 0
 #define BASE_KommentarModuleParamSize 0
-#define BASE_KommentarModuleParamOffset 31613
+#define BASE_KommentarModuleParamOffset 32980
 #define BASE_KommentarModuleCalcIndex(index, m1) (index + BASE_KommentarModuleParamOffset + _channelIndex * BASE_KommentarModuleCount * BASE_KommentarModuleParamSize + m1 * BASE_KommentarModuleParamSize)
 
 
