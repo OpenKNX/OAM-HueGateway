@@ -5,7 +5,6 @@
 #include "FunctionBlocksModule.h"
 #include "HueGatewayModule.h"
 #include "LightManagerModule.h"
-#include "WebUI.h"
 #include "pins_arduino.h"
 
 #if PROG_LED_PIN2
@@ -96,7 +95,6 @@ void setup()
   openknx.addModule(6, openknxFileTransferModule);
 #endif
   openknx.addModule(8, openknxFunctionBlocksModule);
-  openknx.addModule(7, openknxWebUI);
   openknx.addModule(4, openknxLightManagerModule);  // HCL LightManager
   openknx.addModule(9, openknxHueGatewayModule);  // Philips Hue Integration
   openknx.setup();

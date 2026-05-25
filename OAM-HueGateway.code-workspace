@@ -31,9 +31,6 @@
             "path": "../knx"
         },
         {
-            "path": "../OFM-WebUI"
-        },
-        {
             "path": "../OFM-LightManager"
         }
     ],
