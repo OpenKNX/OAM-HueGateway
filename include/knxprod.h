@@ -24,12 +24,12 @@
 #define MAIN_ParameterSize 32980
 #define MAIN_MaxKoNumber 1143
 #define MAIN_OrderNumber "OpenKNX-SR-HUE"
-#define BASE_ModuleVersion 24
-#define NET_ModuleVersion 6
+#define BASE_ModuleVersion 25
+#define NET_ModuleVersion 8
 #define UCT_ModuleVersion 5
 #define LMG_ModuleVersion 3
 #define HUE_ModuleVersion 7
-#define LOG_ModuleVersion 67
+#define LOG_ModuleVersion 68
 #define FCB_ModuleVersion 10
 // Parameter with single occurrence
 
@@ -2486,7 +2486,10 @@
 #define HUE_CHTargetRID                         45      // char*, 40 Byte
 #define     HUE_CHTargetRIDLength 40
 #define HUE_CHHCLMaster                          4      // 8 Bits, Bit 7-0
+#define HUE_CHHCLFallbackPolicy                 85      // 8 Bits, Bit 7-0
 #define HUE_CHHCLLockFallback                   86      // 8 Bits, Bit 7-0
+#define HUE_CHHCLFallbackDurationSec            161      // uint16_t
+#define HUE_CHHCLFallbackReleaseTime            163      // uint16_t
 #define HUE_CHLightType                          0      // 2 Bits, Bit 7-6
 #define     HUE_CHLightTypeMask 0xC0
 #define     HUE_CHLightTypeShift 6
@@ -2505,6 +2508,9 @@
 #define HUE_CHTargetType                         1      // 2 Bits, Bit 4-3
 #define     HUE_CHTargetTypeMask 0x18
 #define     HUE_CHTargetTypeShift 3
+#define HUE_CHHCLAutoStandby                     1      // 2 Bits, Bit 2-1
+#define     HUE_CHHCLAutoStandbyMask 0x06
+#define     HUE_CHHCLAutoStandbyShift 1
 #define HUE_CHPollInterval                       2      // uint8_t
 #define HUE_CHMinBrightness                      3      // uint8_t
 #define HUE_CHOptReachable                      87      // 1 Bit, Bit 7
@@ -2824,8 +2830,14 @@
 #define ParamHUE_CHTargetRIDStr                      (knx.paramString(HUE_ParamCalcIndex(HUE_CHTargetRID), HUE_CHTargetRIDLength))
 // Zuordnung Lichtmanager
 #define ParamHUE_CHHCLMaster                         (knx.paramByte(HUE_ParamCalcIndex(HUE_CHHCLMaster)))
+// Rückfallstrategie nach Sperre
+#define ParamHUE_CHHCLFallbackPolicy                 (knx.paramByte(HUE_ParamCalcIndex(HUE_CHHCLFallbackPolicy)))
 // Rückfallzeit nach Lichtmanager-Sperre
 #define ParamHUE_CHHCLLockFallback                   (knx.paramByte(HUE_ParamCalcIndex(HUE_CHHCLLockFallback)))
+// Freie Rückfalldauer
+#define ParamHUE_CHHCLFallbackDurationSec            (knx.paramWord(HUE_ParamCalcIndex(HUE_CHHCLFallbackDurationSec)))
+// Rückfall-Uhrzeit
+#define ParamHUE_CHHCLFallbackReleaseTime            (knx.paramWord(HUE_ParamCalcIndex(HUE_CHHCLFallbackReleaseTime)))
 // Lampentyp
 #define ParamHUE_CHLightType                         ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHLightType)) & HUE_CHLightTypeMask) >> HUE_CHLightTypeShift)
 // Gerätetyp
@@ -2838,6 +2850,8 @@
 #define ParamHUE_CHSyncDir                           ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHSyncDir)) & HUE_CHSyncDirMask) >> HUE_CHSyncDirShift)
 // Zieltyp
 #define ParamHUE_CHTargetType                        ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHTargetType)) & HUE_CHTargetTypeMask) >> HUE_CHTargetTypeShift)
+// Lichtmanager nach manueller Verstellung sperren
+#define ParamHUE_CHHCLAutoStandby                    ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHHCLAutoStandby)) & HUE_CHHCLAutoStandbyMask) >> HUE_CHHCLAutoStandbyShift)
 // Polling-Intervall
 #define ParamHUE_CHPollInterval                      (knx.paramByte(HUE_ParamCalcIndex(HUE_CHPollInterval)))
 // Minimale Helligkeit
@@ -4708,17 +4722,17 @@
 #define LOG_fOOffKOSendNumber                   81      // uint16_t
 #define LOG_fOOffKOSendNumberRel                81      // int16_t
 
-// Zeit bis der Kanal nach einem Neustart aktiv wird
+// Startverzögerung
 #define ParamLOG_fChannelDelayBase                   ((knx.paramByte(LOG_ParamCalcIndex(LOG_fChannelDelayBase)) & LOG_fChannelDelayBaseMask) >> LOG_fChannelDelayBaseShift)
-// Zeit bis der Kanal nach einem Neustart aktiv wird
+// Startverzögerung
 #define ParamLOG_fChannelDelayTime                   (knx.paramWord(LOG_ParamCalcIndex(LOG_fChannelDelayTime)) & LOG_fChannelDelayTimeMask)
-// Zeit bis der Kanal nach einem Neustart aktiv wird (in Millisekunden)
+// Startverzögerung (in Millisekunden)
 #define ParamLOG_fChannelDelayTimeMS                 (paramDelay(knx.paramWord(LOG_ParamCalcIndex(LOG_fChannelDelayTime))))
 // Logik-Operation
 #define ParamLOG_fLogic                              (PT_Logic)(knx.paramByte(LOG_ParamCalcIndex(LOG_fLogic)))
 // Logik auswerten
 #define ParamLOG_fCalculate                          (PT_Calculate)(knx.paramByte(LOG_ParamCalcIndex(LOG_fCalculate)) & LOG_fCalculateMask)
-// Kanal deaktivieren (zu Testzwecken)
+// Suspendiert
 #define ParamLOG_fDisable                            ((bool)(knx.paramByte(LOG_ParamCalcIndex(LOG_fDisable)) & LOG_fDisableMask))
 // Tor geht sofort wieder zu
 #define ParamLOG_fTGate                              ((bool)(knx.paramByte(LOG_ParamCalcIndex(LOG_fTGate)) & LOG_fTGateMask))
@@ -6756,19 +6770,6 @@
 #define KoFCB_CHKO8                               (knx.getGroupObject(FCB_KoCalcNumber(FCB_KoCHKO8)))
 // 
 #define KoFCB_CHKO9                               (knx.getGroupObject(FCB_KoCalcNumber(FCB_KoCHKO9)))
-
-
-
-// Header generation for Module 'BASE_KommentarModule'
-
-#define BASE_KommentarModuleCount 0
-#define BASE_KommentarModuleModuleParamSize 0
-#define BASE_KommentarModuleSubmodulesParamSize 0
-#define BASE_KommentarModuleParamSize 0
-#define BASE_KommentarModuleParamOffset 32980
-#define BASE_KommentarModuleCalcIndex(index, m1) (index + BASE_KommentarModuleParamOffset + _channelIndex * BASE_KommentarModuleCount * BASE_KommentarModuleParamSize + m1 * BASE_KommentarModuleParamSize)
-
-
 
 
 // enumeration types
