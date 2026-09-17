@@ -22,7 +22,7 @@ Das OpenKNX Hue Gateway integriert Philips Hue Geräte über die Hue API v2 in d
 
 | Modul | Version | Hinweis |
 |---|---|---|
-| [OFM-HueGatewayModule](https://github.com/OpenKNX/OFM-HueGatewayModule) | ≥ 0.7.0 | Pflicht |
+| [OFM-HueGatewayModule](https://github.com/OpenKNX/OFM-HueGateway) | ≥ 0.7.0 | Pflicht |
 | [OFM-LightManager](https://github.com/OpenKNX/OFM-LightManager) | ≥ 0.3.0 | Pflicht (HCL-Engine) |
 | [OFM-Network](https://github.com/OpenKNX/OFM-Network) | ≥ 0.6 | Pflicht |
 | [OGM-Common](https://github.com/OpenKNX/OGM-Common) | ≥ 1.8 | Pflicht |
@@ -39,7 +39,7 @@ Das OpenKNX Hue Gateway integriert Philips Hue Geräte über die Hue API v2 in d
 
 ## Anwenderdokumentation
 
-Die Anwenderdokumentation ist in der [Applikationsbeschreibung des Moduls](../OFM-HueGatewayModule/docs/Applikationsbeschreibung.md) zu finden.
+Die Anwenderdokumentation ist in der [Applikationsbeschreibung des Moduls](https://github.com/OpenKNX/OFM-HueGateway/blob/v1/docs/Applikationsbeschreibung.md) zu finden.
 
 ## Installation
 

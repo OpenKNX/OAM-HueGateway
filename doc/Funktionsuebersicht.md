@@ -26,6 +26,6 @@ Für den Betrieb wird OpenKNX-kompatible Hardware mit LAN-Anschluss benötigt.
 ## Weitere Informationen
 
 - [Releases](https://github.com/OpenKNX/OAM-HueGateway/releases)
-- [Dokumentation](https://github.com/OpenKNX/OFM-HueGatewayModule/blob/main/docs/Applikationsbeschreibung.md)
+- [Dokumentation](https://github.com/OpenKNX/OFM-HueGateway/blob/v1/docs/Applikationsbeschreibung.md)
 - [Github-Repository](https://github.com/OpenKNX/OAM-HueGateway)
 - Thread im KNX-User-Forum *(folgt)*
