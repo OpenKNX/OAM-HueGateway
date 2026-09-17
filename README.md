@@ -50,7 +50,8 @@ Eine vorkompilierte Firmware ist unter [Releases](https://github.com/OpenKNX/OAM
 Als Hardware wird OpenKNX-kompatible Hardware mit LAN-Anschluss benötigt.
 Die vorkompilierte Firmware unterstützt:
 
-- [REG1-LAN-TP-Base](http://device.openknx.de/REG1-LAN-TP-Base) (ESP32, LAN)
+- [REG1-LAN-TP-Base](http://device.openknx.de/REG1-LAN-TP-Base) (ESP32, LAN + TP)
+- [REG1-LAN-Base](http://device.openknx.de/REG1-LAN-Base) (ESP32, LAN)
 
 ## Lizenz
 
