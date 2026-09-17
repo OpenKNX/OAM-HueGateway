@@ -6,7 +6,7 @@ Bewegungsmelder, Kontaktsensor oder Taster/Schalter konfiguriert werden können.
 Die Synchronisation zwischen KNX und der Hue Bridge erfolgt bidirektional über
 den Hue Event-Stream und ein optionales Polling.
 
-Zusätzlich ist ein integrierter Lichtmanager mit bis zu 8 unabhängigen Human
+Zusätzlich ist ein integrierter Lichtmanager mit bis zu 16 unabhängigen Human
 Centric Lighting Mastern enthalten, sodass Farbtemperatur und Helligkeit
 tageszeitabhängig automatisch nachgeführt werden können – wahlweise über
 konfigurierbare Stützpunkte oder ein astronomisches Sonnenfenster.
@@ -22,6 +22,7 @@ Diese Funktion wird als eigenständige [OpenKNX-Applikation](https://openknx.atl
 Für den Betrieb wird OpenKNX-kompatible Hardware mit LAN-Anschluss benötigt.
 
 - [REG1-LAN-TP-Base](http://device.openknx.de/REG1-LAN-TP-Base)
+- [REG1-LAN-Base](http://device.openknx.de/REG1-LAN-Base)
 
 ## Weitere Informationen
 

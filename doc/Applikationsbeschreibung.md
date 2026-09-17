@@ -4,19 +4,19 @@
 
 * Diese KNXprod wird nicht von der KNX Association offiziell unterstützt!
 * Die Erzeugung der KNXprod geschieht auf eigene Verantwortung!
-* Diese Firmware ist aktuell in Entwicklung (Version 0.4)
+* Diese Firmware ist aktuell in Entwicklung.
 
-## Stand Version 0.4
+## Funktionsumfang
 
 - Bis zu **32 Hue-Kanäle** projektierbar.
-- Bis zu **8 Lichtmanager** konfigurierbar und nutzbar.
+- Bis zu **16 Lichtmanager** konfigurierbar und nutzbar.
 - Globales Schaltverhalten über ETS einstellbar:
 	- **Einschaltgeschwindigkeit (Sekunden)**
 	- **Ausschaltgeschwindigkeit (Sekunden)**
 - **Fünf Gerätetypen** unterstützt: Licht, Steckdose, Bewegungsmelder, Kontaktsensor, Taster/Schalter.
-- **Szenen-Engine**: bis zu 8 Szenen pro Kanal (Schalten, Dimmen, CT, RGB).
+- **Szenen-Engine**: bis zu 8 Szenen pro Kanal (Schalten, Dimmen, CT, RGB, Hue-Szene).
 - **Taster-/Drehregler-Unterstützung**: Kurz-/Langdruck, relative Dimmsteuerung, Jalousie.
-- **Relatives Dimmen** mit konfigurierbarem Wiederholungsintervall (20–500 ms).
+- **Relatives Dimmen** mit konfigurierbarem Wiederholungsintervall (80–300 ms).
 
 ## Module
 
