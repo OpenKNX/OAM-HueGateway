@@ -2,6 +2,16 @@
 
 Alle wesentlichen Änderungen am OpenKNX Hue Gateway Applikationsprodukt werden in dieser Datei dokumentiert.
 
+## Firmware-Revision 4 (ApplicationVersion weiterhin 0.7) - 2026-09-16 — Performance-Update Bridge-Kommunikation
+
+### Geändert
+- Mindestversion **OFM-HueGatewayModule 0.7.4**. Kein Breaking Change, `ApplicationVersion` bleibt bewusst bei `0.7` — keine KO-Verschiebung, keine Neuverknüpfung in der ETS nötig.
+
+### Behoben (über Modulversion, siehe dortiges CHANGELOG für Details)
+- Schaltbefehle an die Hue-Bridge liefen bislang seriell und ohne Wiederverwendung der TLS-Verbindung — jeder einzelne Befehl kostete einen vollen Handshake (~900 ms–1 s). Mehrere Lampen kurz hintereinander geschaltet summierten sich dadurch auf mehrere Sekunden sichtbarer Verzögerung.
+- Der EventStream (Push-Updates von der Bridge) verband sich auf dieser Hardware praktisch nie dauerhaft, weil ihm der interne Arbeitsspeicher für den TLS-Kontext fehlte; das Gateway fiel stattdessen dauerhaft auf sekündliches Abfragen der Bridge zurück.
+- Ein Schaltbefehl konnte mehrere Status-Telegramme auf den KNX-Bus bringen, auch wenn sich nur ein einzelner Wert (z. B. nur der Schaltzustand) geändert hatte.
+
 ## [0.7] - 2026-05-22 — HCL-Profil-Release
 
 ### Geändert (kompatibilitätsrelevant — Breaking)
