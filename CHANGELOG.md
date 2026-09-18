@@ -24,6 +24,8 @@ Alle wesentlichen Änderungen am OpenKNX Hue Gateway Applikationsprodukt werden 
 ### Migration
 - Vor dem ETS-Download: Backup der bestehenden Projektierung erstellen.
 - Nach dem Download in der ETS auf der Seite **Kanalauswahl** für jeden zuvor genutzten Kanal den Gerätetyp erneut wählen. Ziel-ID, Lampentyp, Szenen, Taster- und Lichtmanager-Einstellungen sind danach wieder wirksam.
+- Bei Licht-Kanälen mit Rückfallstrategie „Freie Dauer" oder „Freie Uhrzeit": **Freie Rückfalldauer** und **Rückfall-Uhrzeit** prüfen, sie stehen nach dem Update auf dem Standard (1800 s bzw. 3:00 Uhr).
+- Neu: Ein/Aus-Lampen haben wieder das KO „Status Schalten"; bei Bedarf eine Gruppenadresse verknüpfen.
 
 ## Firmware-Revision 4 (ApplicationVersion weiterhin 0.7) - 2026-09-16 — Performance-Update Bridge-Kommunikation
 
