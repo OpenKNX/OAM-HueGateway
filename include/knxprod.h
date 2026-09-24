@@ -19,7 +19,7 @@
 #define MAIN_FirmwareName "Hue Gateway (Beta)"
 #define MAIN_OpenKnxId 0xAD
 #define MAIN_ApplicationNumber 2
-#define MAIN_ApplicationVersion 7
+#define MAIN_ApplicationVersion 9
 #define MAIN_ApplicationEncoding iso-8859-15
 #define MAIN_ParameterSize 32980
 #define MAIN_MaxKoNumber 1143
@@ -27,8 +27,8 @@
 #define BASE_ModuleVersion 25
 #define NET_ModuleVersion 8
 #define UCT_ModuleVersion 5
-#define LMG_ModuleVersion 3
-#define HUE_ModuleVersion 7
+#define LMG_ModuleVersion 4
+#define HUE_ModuleVersion 9
 #define LOG_ModuleVersion 68
 #define FCB_ModuleVersion 10
 // Parameter with single occurrence
@@ -375,6 +375,12 @@
 #define LMG_CHLockFallback                      192      // 8 Bits, Bit 7-0
 #define LMG_CHName                               0      // char*, 25 Byte
 #define     LMG_CHNameLength 25
+#define LMG_CHActive                            25      // 1 Bit, Bit 7
+#define     LMG_CHActiveMask 0x80
+#define     LMG_CHActiveShift 7
+#define LMG_CHDisabled                          25      // 1 Bit, Bit 6
+#define     LMG_CHDisabledMask 0x40
+#define     LMG_CHDisabledShift 6
 #define LMG_CHIntegrationMode                   201      // 2 Bits, Bit 7-6
 #define     LMG_CHIntegrationModeMask 0xC0
 #define     LMG_CHIntegrationModeShift 6
@@ -1165,9 +1171,13 @@
 #define ParamLMG_CHFallbackReleaseTime               (knx.paramWord(LMG_ParamCalcIndex(LMG_CHFallbackReleaseTime)))
 // Rückfallzeit nach Sperre
 #define ParamLMG_CHLockFallback                      (knx.paramByte(LMG_ParamCalcIndex(LMG_CHLockFallback)))
-// Name Lichtmanager %C%
+// Beschreibung
 #define ParamLMG_CHName                              (knx.paramData(LMG_ParamCalcIndex(LMG_CHName)))
 #define ParamLMG_CHNameStr                           (knx.paramString(LMG_ParamCalcIndex(LMG_CHName), LMG_CHNameLength))
+// Kanalaktivität
+#define ParamLMG_CHActive                            ((bool)(knx.paramByte(LMG_ParamCalcIndex(LMG_CHActive)) & LMG_CHActiveMask))
+// Suspendiert
+#define ParamLMG_CHDisabled                          ((bool)(knx.paramByte(LMG_ParamCalcIndex(LMG_CHDisabled)) & LMG_CHDisabledMask))
 // Bereitstellung der Lichtmanager-Sollwerte
 #define ParamLMG_CHIntegrationMode                   ((knx.paramByte(LMG_ParamCalcIndex(LMG_CHIntegrationMode)) & LMG_CHIntegrationModeMask) >> LMG_CHIntegrationModeShift)
 // Status auf KNX-Bus senden
@@ -2433,7 +2443,7 @@
 #define ParamHUE_HUESwitchOnTransitionSec            (knx.paramByte(HUE_HUESwitchOnTransitionSec))
 // Ausschaltgeschwindigkeit
 #define ParamHUE_HUESwitchOffTransitionSec           (knx.paramByte(HUE_HUESwitchOffTransitionSec))
-// Anzahl aktiver Kanäle
+// Verfügbare Kanäle
 #define ParamHUE_HUEChannelCount                     (knx.paramByte(HUE_HUEChannelCount))
 // Hue Szene 1 RID
 #define ParamHUE_HUEHueScene1RID                     (knx.paramData(HUE_HUEHueScene1RID))
@@ -2488,14 +2498,12 @@
 #define HUE_CHHCLMaster                          4      // 8 Bits, Bit 7-0
 #define HUE_CHHCLFallbackPolicy                 85      // 8 Bits, Bit 7-0
 #define HUE_CHHCLLockFallback                   86      // 8 Bits, Bit 7-0
-#define HUE_CHHCLFallbackDurationSec            161      // uint16_t
-#define HUE_CHHCLFallbackReleaseTime            163      // uint16_t
 #define HUE_CHLightType                          0      // 2 Bits, Bit 7-6
 #define     HUE_CHLightTypeMask 0xC0
 #define     HUE_CHLightTypeShift 6
-#define HUE_CHDeviceType                         0      // 3 Bits, Bit 5-3
-#define     HUE_CHDeviceTypeMask 0x38
-#define     HUE_CHDeviceTypeShift 3
+#define HUE_CHChannelType                        0      // 3 Bits, Bit 5-3
+#define     HUE_CHChannelTypeMask 0x38
+#define     HUE_CHChannelTypeShift 3
 #define HUE_CHButtonCount                        0      // 3 Bits, Bit 2-0
 #define     HUE_CHButtonCountMask 0x07
 #define     HUE_CHButtonCountShift 0
@@ -2630,12 +2638,32 @@
 #define HUE_CHScene8Red                         158      // uint8_t
 #define HUE_CHScene8Green                       159      // uint8_t
 #define HUE_CHScene8Blue                        160      // uint8_t
+#define HUE_CHHCLFallbackDurationSec            161      // uint16_t
+#define HUE_CHHCLFallbackReleaseTime            163      // uint16_t
 #define HUE_CHBtn1KurzTyp                       161      // 4 Bits, Bit 7-4
 #define     HUE_CHBtn1KurzTypMask 0xF0
 #define     HUE_CHBtn1KurzTypShift 4
 #define HUE_CHBtn1LangTyp                       161      // 4 Bits, Bit 3-0
 #define     HUE_CHBtn1LangTypMask 0x0F
 #define     HUE_CHBtn1LangTypShift 0
+#define HUE_CHBtn2KurzTyp                       162      // 4 Bits, Bit 7-4
+#define     HUE_CHBtn2KurzTypMask 0xF0
+#define     HUE_CHBtn2KurzTypShift 4
+#define HUE_CHBtn2LangTyp                       162      // 4 Bits, Bit 3-0
+#define     HUE_CHBtn2LangTypMask 0x0F
+#define     HUE_CHBtn2LangTypShift 0
+#define HUE_CHBtn3KurzTyp                       163      // 4 Bits, Bit 7-4
+#define     HUE_CHBtn3KurzTypMask 0xF0
+#define     HUE_CHBtn3KurzTypShift 4
+#define HUE_CHBtn3LangTyp                       163      // 4 Bits, Bit 3-0
+#define     HUE_CHBtn3LangTypMask 0x0F
+#define     HUE_CHBtn3LangTypShift 0
+#define HUE_CHBtn4KurzTyp                       164      // 4 Bits, Bit 7-4
+#define     HUE_CHBtn4KurzTypMask 0xF0
+#define     HUE_CHBtn4KurzTypShift 4
+#define HUE_CHBtn4LangTyp                       164      // 4 Bits, Bit 3-0
+#define     HUE_CHBtn4LangTypMask 0x0F
+#define     HUE_CHBtn4LangTypShift 0
 #define HUE_CHBtn1KurzSchaltwert                165      // 2 Bits, Bit 7-6
 #define     HUE_CHBtn1KurzSchaltwertMask 0xC0
 #define     HUE_CHBtn1KurzSchaltwertShift 6
@@ -2674,12 +2702,6 @@
 #define HUE_CHBtn1LangTemp                      167      // uint8_t
 #define HUE_CHBtn1LangByte                      167      // uint8_t
 #define HUE_CHBtn1LangWord                      167      // uint16_t
-#define HUE_CHBtn2KurzTyp                       162      // 4 Bits, Bit 7-4
-#define     HUE_CHBtn2KurzTypMask 0xF0
-#define     HUE_CHBtn2KurzTypShift 4
-#define HUE_CHBtn2LangTyp                       162      // 4 Bits, Bit 3-0
-#define     HUE_CHBtn2LangTypMask 0x0F
-#define     HUE_CHBtn2LangTypShift 0
 #define HUE_CHBtn2KurzSchaltwert                169      // 2 Bits, Bit 7-6
 #define     HUE_CHBtn2KurzSchaltwertMask 0xC0
 #define     HUE_CHBtn2KurzSchaltwertShift 6
@@ -2718,12 +2740,6 @@
 #define HUE_CHBtn2LangTemp                      171      // uint8_t
 #define HUE_CHBtn2LangByte                      171      // uint8_t
 #define HUE_CHBtn2LangWord                      171      // uint16_t
-#define HUE_CHBtn3KurzTyp                       163      // 4 Bits, Bit 7-4
-#define     HUE_CHBtn3KurzTypMask 0xF0
-#define     HUE_CHBtn3KurzTypShift 4
-#define HUE_CHBtn3LangTyp                       163      // 4 Bits, Bit 3-0
-#define     HUE_CHBtn3LangTypMask 0x0F
-#define     HUE_CHBtn3LangTypShift 0
 #define HUE_CHBtn3KurzSchaltwert                173      // 2 Bits, Bit 7-6
 #define     HUE_CHBtn3KurzSchaltwertMask 0xC0
 #define     HUE_CHBtn3KurzSchaltwertShift 6
@@ -2762,12 +2778,6 @@
 #define HUE_CHBtn3LangTemp                      175      // uint8_t
 #define HUE_CHBtn3LangByte                      175      // uint8_t
 #define HUE_CHBtn3LangWord                      175      // uint16_t
-#define HUE_CHBtn4KurzTyp                       164      // 4 Bits, Bit 7-4
-#define     HUE_CHBtn4KurzTypMask 0xF0
-#define     HUE_CHBtn4KurzTypShift 4
-#define HUE_CHBtn4LangTyp                       164      // 4 Bits, Bit 3-0
-#define     HUE_CHBtn4LangTypMask 0x0F
-#define     HUE_CHBtn4LangTypShift 0
 #define HUE_CHBtn4KurzSchaltwert                177      // 2 Bits, Bit 7-6
 #define     HUE_CHBtn4KurzSchaltwertMask 0xC0
 #define     HUE_CHBtn4KurzSchaltwertShift 6
@@ -2819,7 +2829,7 @@
 #define     HUE_CHNativeHueActionMask 0x80
 #define     HUE_CHNativeHueActionShift 7
 
-// Bezeichnung
+// Beschreibung
 #define ParamHUE_CHName                              (knx.paramData(HUE_ParamCalcIndex(HUE_CHName)))
 #define ParamHUE_CHNameStr                           (knx.paramString(HUE_ParamCalcIndex(HUE_CHName), HUE_CHNameLength))
 // Hue Lampen-ID (UUID)
@@ -2834,17 +2844,13 @@
 #define ParamHUE_CHHCLFallbackPolicy                 (knx.paramByte(HUE_ParamCalcIndex(HUE_CHHCLFallbackPolicy)))
 // Rückfallzeit nach Lichtmanager-Sperre
 #define ParamHUE_CHHCLLockFallback                   (knx.paramByte(HUE_ParamCalcIndex(HUE_CHHCLLockFallback)))
-// Freie Rückfalldauer
-#define ParamHUE_CHHCLFallbackDurationSec            (knx.paramWord(HUE_ParamCalcIndex(HUE_CHHCLFallbackDurationSec)))
-// Rückfall-Uhrzeit
-#define ParamHUE_CHHCLFallbackReleaseTime            (knx.paramWord(HUE_ParamCalcIndex(HUE_CHHCLFallbackReleaseTime)))
 // Lampentyp
 #define ParamHUE_CHLightType                         ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHLightType)) & HUE_CHLightTypeMask) >> HUE_CHLightTypeShift)
 // Gerätetyp
-#define ParamHUE_CHDeviceType                        ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHDeviceType)) & HUE_CHDeviceTypeMask) >> HUE_CHDeviceTypeShift)
+#define ParamHUE_CHChannelType                       (PT_HUEChannelType)((knx.paramByte(HUE_ParamCalcIndex(HUE_CHChannelType)) & HUE_CHChannelTypeMask) >> HUE_CHChannelTypeShift)
 // Anzahl Tasten
 #define ParamHUE_CHButtonCount                       (knx.paramByte(HUE_ParamCalcIndex(HUE_CHButtonCount)) & HUE_CHButtonCountMask)
-// Kanal deaktivieren (zu Testzwecken)
+// Suspendiert
 #define ParamHUE_CHDisabled                          ((bool)(knx.paramByte(HUE_ParamCalcIndex(HUE_CHDisabled)) & HUE_CHDisabledMask))
 // Synchronisationsrichtung
 #define ParamHUE_CHSyncDir                           ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHSyncDir)) & HUE_CHSyncDirMask) >> HUE_CHSyncDirShift)
@@ -3062,10 +3068,26 @@
 #define ParamHUE_CHScene8Green                       (knx.paramByte(HUE_ParamCalcIndex(HUE_CHScene8Green)))
 // Blau
 #define ParamHUE_CHScene8Blue                        (knx.paramByte(HUE_ParamCalcIndex(HUE_CHScene8Blue)))
+// Freie Rückfalldauer
+#define ParamHUE_CHHCLFallbackDurationSec            (knx.paramWord(HUE_ParamCalcIndex(HUE_CHHCLFallbackDurationSec)))
+// Rückfall-Uhrzeit
+#define ParamHUE_CHHCLFallbackReleaseTime            (knx.paramWord(HUE_ParamCalcIndex(HUE_CHHCLFallbackReleaseTime)))
 // Taste 1 Kurzdruck
 #define ParamHUE_CHBtn1KurzTyp                       ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn1KurzTyp)) & HUE_CHBtn1KurzTypMask) >> HUE_CHBtn1KurzTypShift)
 // Taste 1 Langdruck
 #define ParamHUE_CHBtn1LangTyp                       (knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn1LangTyp)) & HUE_CHBtn1LangTypMask)
+// Taste 2 Kurzdruck
+#define ParamHUE_CHBtn2KurzTyp                       ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn2KurzTyp)) & HUE_CHBtn2KurzTypMask) >> HUE_CHBtn2KurzTypShift)
+// Taste 2 Langdruck
+#define ParamHUE_CHBtn2LangTyp                       (knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn2LangTyp)) & HUE_CHBtn2LangTypMask)
+// Taste 3 Kurzdruck
+#define ParamHUE_CHBtn3KurzTyp                       ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn3KurzTyp)) & HUE_CHBtn3KurzTypMask) >> HUE_CHBtn3KurzTypShift)
+// Taste 3 Langdruck
+#define ParamHUE_CHBtn3LangTyp                       (knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn3LangTyp)) & HUE_CHBtn3LangTypMask)
+// Taste 4 Kurzdruck
+#define ParamHUE_CHBtn4KurzTyp                       ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn4KurzTyp)) & HUE_CHBtn4KurzTypMask) >> HUE_CHBtn4KurzTypShift)
+// Taste 4 Langdruck
+#define ParamHUE_CHBtn4LangTyp                       (knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn4LangTyp)) & HUE_CHBtn4LangTypMask)
 // Schaltwert
 #define ParamHUE_CHBtn1KurzSchaltwert                ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn1KurzSchaltwert)) & HUE_CHBtn1KurzSchaltwertMask) >> HUE_CHBtn1KurzSchaltwertShift)
 // Richtung
@@ -3102,10 +3124,6 @@
 #define ParamHUE_CHBtn1LangByte                      (knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn1LangByte)))
 // Wert
 #define ParamHUE_CHBtn1LangWord                      (knx.paramWord(HUE_ParamCalcIndex(HUE_CHBtn1LangWord)))
-// Taste 2 Kurzdruck
-#define ParamHUE_CHBtn2KurzTyp                       ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn2KurzTyp)) & HUE_CHBtn2KurzTypMask) >> HUE_CHBtn2KurzTypShift)
-// Taste 2 Langdruck
-#define ParamHUE_CHBtn2LangTyp                       (knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn2LangTyp)) & HUE_CHBtn2LangTypMask)
 // Schaltwert
 #define ParamHUE_CHBtn2KurzSchaltwert                ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn2KurzSchaltwert)) & HUE_CHBtn2KurzSchaltwertMask) >> HUE_CHBtn2KurzSchaltwertShift)
 // Richtung
@@ -3142,10 +3160,6 @@
 #define ParamHUE_CHBtn2LangByte                      (knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn2LangByte)))
 // Wert
 #define ParamHUE_CHBtn2LangWord                      (knx.paramWord(HUE_ParamCalcIndex(HUE_CHBtn2LangWord)))
-// Taste 3 Kurzdruck
-#define ParamHUE_CHBtn3KurzTyp                       ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn3KurzTyp)) & HUE_CHBtn3KurzTypMask) >> HUE_CHBtn3KurzTypShift)
-// Taste 3 Langdruck
-#define ParamHUE_CHBtn3LangTyp                       (knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn3LangTyp)) & HUE_CHBtn3LangTypMask)
 // Schaltwert
 #define ParamHUE_CHBtn3KurzSchaltwert                ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn3KurzSchaltwert)) & HUE_CHBtn3KurzSchaltwertMask) >> HUE_CHBtn3KurzSchaltwertShift)
 // Richtung
@@ -3182,10 +3196,6 @@
 #define ParamHUE_CHBtn3LangByte                      (knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn3LangByte)))
 // Wert
 #define ParamHUE_CHBtn3LangWord                      (knx.paramWord(HUE_ParamCalcIndex(HUE_CHBtn3LangWord)))
-// Taste 4 Kurzdruck
-#define ParamHUE_CHBtn4KurzTyp                       ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn4KurzTyp)) & HUE_CHBtn4KurzTypMask) >> HUE_CHBtn4KurzTypShift)
-// Taste 4 Langdruck
-#define ParamHUE_CHBtn4LangTyp                       (knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn4LangTyp)) & HUE_CHBtn4LangTypMask)
 // Schaltwert
 #define ParamHUE_CHBtn4KurzSchaltwert                ((knx.paramByte(HUE_ParamCalcIndex(HUE_CHBtn4KurzSchaltwert)) & HUE_CHBtn4KurzSchaltwertMask) >> HUE_CHBtn4KurzSchaltwertShift)
 // Richtung
@@ -6773,6 +6783,16 @@
 
 
 // enumeration types
+enum class PT_HUEChannelType
+{
+    Deaktiviert = 0,
+    Licht = 1,
+    Bewegungsmelder = 2,
+    Taster = 3,
+    Kontaktsensor = 4,
+    Steckdose = 5
+};
+
 enum class PT_Logic
 {
     AUS = 0,
