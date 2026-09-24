@@ -4,7 +4,8 @@ Das Hue Gateway integriert Philips Hue Geräte über die Hue API v2 in das KNX-S
 Es stehen bis zu 32 Hue-Kanäle zur Verfügung, die wahlweise als Licht, Steckdose,
 Bewegungsmelder, Kontaktsensor oder Taster/Schalter konfiguriert werden können.
 Die Synchronisation zwischen KNX und der Hue Bridge erfolgt bidirektional über
-den Hue Event-Stream und ein optionales Polling.
+den Hue Event-Stream und ein optionales Polling. Die Hue-Geräte werden direkt in
+der ETS von der Bridge geladen und den Kanälen zugeordnet.
 
 Zusätzlich ist ein integrierter Lichtmanager mit bis zu 16 unabhängigen Human
 Centric Lighting Mastern enthalten, sodass Farbtemperatur und Helligkeit

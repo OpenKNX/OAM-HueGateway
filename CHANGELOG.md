@@ -2,6 +2,11 @@
 
 Alle wesentlichen Änderungen am OpenKNX Hue Gateway Applikationsprodukt werden in dieser Datei dokumentiert.
 
+## [Unreleased] — Inbetriebnahme aus der ETS
+
+### Hinzugefügt (über Modulversion, siehe dortiges CHANGELOG für Details)
+- Neue ETS-Seite **„Inbetriebnahme"** im Hue-Modul: Hue-Geräte per Button von der Bridge laden, pro Gerät mit allen IDs anzeigen und Kanälen bzw. Szenen-Slots zuordnen. Die Seite ist speicherlos und verlängert den Download nicht; KO-Nummern, Offsets und Speicherlayout sind unverändert.
+
 ## [0.8] - 2026-09-17 — Kanalauswahl nach OpenKNX-Standard
 
 ### Geändert (kompatibilitätsrelevant — Breaking in der ETS)
