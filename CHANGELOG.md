@@ -18,13 +18,14 @@ Alle wesentlichen Änderungen am OpenKNX Hue Gateway Applikationsprodukt werden 
 
 ### Geändert (kompatibilitätsrelevant — Breaking in der ETS)
 - Mindestversion **OFM-HueGatewayModule 0.8.0** (`%HUE_VerifyVersion%` = 0.8).
-- `ApplicationVersion` von `0.7` auf `0.8` erhöht (Dev-Applikation `0.8.0`), Firmware-Revision beginnt damit wieder bei 0.
+- Mindestversion **OFM-LightManager 0.4.0** (`%LMG_VerifyVersion%` = 0.4): Auch die Lichtmanager werden jetzt auf einer eigenen Seite **Kanalauswahl** (unter „Lichtmanager" → „Allgemein") einzeln aktiviert; „Verfügbare Kanäle" entfällt. **Nach dem Update sind alle Lichtmanager deaktiviert** und müssen dort wieder aktiviert werden, ihre Einstellungen bleiben erhalten. Hue-Kanäle, deren zugeordneter Lichtmanager nicht aktiviert ist, arbeiten ohne Lichtmanager.
+- `ApplicationVersion` von `0.7` auf `0.8` erhöht.
 - **Kanäle werden jetzt auf einer eigenen Seite „Kanalauswahl" aktiviert** (direkt über dem ersten Kanal), mit je einer Zeile aus Kanal, Gerätetyp und Beschreibung. Das Feld „Anzahl aktiver Kanäle" auf der Seite „Allgemein" entfällt.
 - **Der Gerätetyp kennt jetzt den Wert `Deaktiviert`.** Nach dem Update steht jeder Kanal auf `Deaktiviert` und muss einmalig neu typisiert werden; alle übrigen Kanaleinstellungen bleiben erhalten.
 - Deaktivierte Kanäle erscheinen nicht mehr im Baum links. Beim ersten Öffnen ist kein Kanal aktiv, bisher waren es vier.
 - „Kanal deaktivieren (zu Testzwecken)" heißt jetzt **„Suspendiert"** (Nein/Ja) und gilt für alle Gerätetypen, bisher nur für Licht. Suspendierte Kanäle sind im Baum mit ⛔ markiert.
 - „Bezeichnung" heißt jetzt **„Beschreibung"** (OpenKNX-Glossar).
-- `ReplacesVersions` ergänzt und korrigiert: Die Dev-Liste enthält jetzt auch `0.7.2`, in der Release-Liste war der erste Eintrag durch einen Tippfehler unbrauchbar (`0.70.6` statt `0.7 0.6`) — Geräte dieser Versionen lassen sich damit wieder aktualisieren.
+
 
 ### Keine KO-Verschiebung
 - KO-Nummern, Blockgröße und Offsets sind unverändert (`HUE_KoOffset`, `HUE_KoBlockSize`). **Bestehende Gruppenadressen bleiben verknüpft**, anders als beim Update auf 0.7.
@@ -32,11 +33,6 @@ Alle wesentlichen Änderungen am OpenKNX Hue Gateway Applikationsprodukt werden 
 ### Hinzugefügt (über Modulversion, siehe dortiges CHANGELOG für Details)
 - Der Kanaltyp lässt sich sowohl in der Kanalauswahl als auch im Kanalkopf ändern; beide Felder werden synchron gehalten.
 - Der VS-Code-Task zum Erzeugen der ETS-Kontexthilfe ist im Modul jetzt mitversioniert.
-
-### Migration
-- Vor dem ETS-Download: Backup der bestehenden Projektierung erstellen.
-- Nach dem Download in der ETS auf der Seite **Kanalauswahl** für jeden zuvor genutzten Kanal den Gerätetyp erneut wählen. Ziel-ID, Lampentyp, Szenen, Taster- und Lichtmanager-Einstellungen sind danach wieder wirksam.
-- Bei Licht-Kanälen mit Rückfallstrategie „Freie Dauer" oder „Freie Uhrzeit": **Freie Rückfalldauer** und **Rückfall-Uhrzeit** prüfen, sie stehen nach dem Update auf dem Standard (1800 s bzw. 3:00 Uhr).
 - Neu: Ein/Aus-Lampen haben wieder das KO „Status Schalten"; bei Bedarf eine Gruppenadresse verknüpfen.
 
 ## Firmware-Revision 4 (ApplicationVersion weiterhin 0.7) - 2026-09-16 — Performance-Update Bridge-Kommunikation
