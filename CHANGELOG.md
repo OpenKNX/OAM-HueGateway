@@ -2,10 +2,17 @@
 
 Alle wesentlichen Änderungen am OpenKNX Hue Gateway Applikationsprodukt werden in dieser Datei dokumentiert.
 
-## [Unreleased] — Inbetriebnahme aus der ETS
+## [0.9] - 2026-09-24 — Inbetriebnahme aus der ETS
+
+### Geändert
+- Mindestversion **OFM-HueGatewayModule 0.9.0** (`%HUE_VerifyVersion%` = 0.9).
+- `ApplicationVersion` von `0.8` auf `0.9` erhöht (Dev-Applikation `0.9.0`).
+
+### Keine KO-Verschiebung
+- KO-Nummern, Offsets und Speicherlayout sind unverändert. **Bestehende Gruppenadressen und Kanaleinstellungen bleiben erhalten.**
 
 ### Hinzugefügt (über Modulversion, siehe dortiges CHANGELOG für Details)
-- Neue ETS-Seite **„Inbetriebnahme"** im Hue-Modul: Hue-Geräte per Button von der Bridge laden, pro Gerät mit allen IDs anzeigen und Kanälen bzw. Szenen-Slots zuordnen. Die Seite ist speicherlos und verlängert den Download nicht; KO-Nummern, Offsets und Speicherlayout sind unverändert.
+- Neue ETS-Seite **„Inbetriebnahme"** im Hue-Modul: Bridge per Button koppeln (Pairing), Hue-Geräte per Button von der Bridge laden, pro Gerät mit allen IDs anzeigen und Kanälen bzw. Szenen-Slots zuordnen. Die Seite ist speicherlos und verlängert den Download nicht.
 
 ## [0.8] - 2026-09-17 — Kanalauswahl nach OpenKNX-Standard
 
