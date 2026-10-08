@@ -21,7 +21,7 @@
 #define MAIN_ApplicationNumber 2
 #define MAIN_ApplicationVersion 9
 #define MAIN_ApplicationEncoding iso-8859-15
-#define MAIN_ParameterSize 32980
+#define MAIN_ParameterSize 32979
 #define MAIN_MaxKoNumber 1143
 #define MAIN_OrderNumber "OpenKNX-SR-HUE"
 #define BASE_ModuleVersion 25
@@ -30,7 +30,7 @@
 #define LMG_ModuleVersion 4
 #define HUE_ModuleVersion 9
 #define LOG_ModuleVersion 68
-#define FCB_ModuleVersion 10
+#define FCB_ModuleVersion 11
 // Parameter with single occurrence
 
 
@@ -5709,15 +5709,10 @@
 // Ausgang
 #define KoLOG_KOfO                                (knx.getGroupObject(LOG_KoCalcNumber(LOG_KoKOfO)))
 
-#define FCB_VisibleChannels                     31764      // uint8_t
-
-// Verfügbare Kanäle
-#define ParamFCB_VisibleChannels                     (knx.paramByte(FCB_VisibleChannels))
-
 #define FCB_ChannelCount 15
 
 // Parameter per channel
-#define FCB_ParamBlockOffset 31765
+#define FCB_ParamBlockOffset 31764
 #define FCB_ParamBlockSize 81
 #define FCB_ParamCalcIndex(index) (index + FCB_ParamBlockOffset + _channelIndex * FCB_ParamBlockSize)
 
@@ -6231,7 +6226,7 @@
 
 // Type
 #define ParamFCB_CHChannelType                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHChannelType)))
-// Kanal deaktivieren (zu Testzwecken)
+// Suspendiert
 #define ParamFCB_CHChannelDisabled                   ((bool)(knx.paramByte(FCB_ParamCalcIndex(FCB_CHChannelDisabled)) & FCB_CHChannelDisabledMask))
 // Eingang 1
 #define ParamFCB_CHLogicKo0D                         ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHLogicKo0D)) & FCB_CHLogicKo0DMask) >> FCB_CHLogicKo0DShift)
