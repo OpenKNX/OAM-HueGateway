@@ -14,6 +14,7 @@ Das OpenKNX Hue Gateway integriert Philips Hue Geräte über die Hue API v2 in d
   - Per-Kanal-Slew-Rate (Tag/Nacht) mit interner Astro-Berechnung
 - **Szenensteuerung**: bis zu 8 Szenen-Slots je Kanal (Schalten, Dimmen, Farbtemperatur, RGB, Hue-Szene); Recall und Store per KNX DPT 18.001
 - **Taster/Schalter**: bis zu 4 Tasten je Kanal; Kurz- und Langdruck frei belegbar (DPT-Typ wählbar: Schalten, Dimmen, Szenennummer, Schritt/Stop, Prozentwert, Temperatur, Byte, Word); Drehregler-Unterstützung (Beta)
+- **Inbetriebnahme direkt in der ETS**: Bridge koppeln, Hue-Geräte laden und Kanälen bzw. Szenen-Slots zuordnen, ohne das WebUI zu öffnen
 - WebUI zum Laden der Hue IDs und Web-Konsole für Diagnose
 - mDNS-Service (`openknx-bridge.local`)
 - Konfigurierbar über ETS
@@ -22,10 +23,10 @@ Das OpenKNX Hue Gateway integriert Philips Hue Geräte über die Hue API v2 in d
 
 | Modul | Version | Hinweis |
 |---|---|---|
-| [OFM-HueGatewayModule](https://github.com/OpenKNX/OFM-HueGateway) | ≥ 0.7.0 | Pflicht |
-| [OFM-LightManager](https://github.com/OpenKNX/OFM-LightManager) | ≥ 0.3.0 | Pflicht (HCL-Engine) |
-| [OFM-Network](https://github.com/OpenKNX/OFM-Network) | ≥ 0.6 | Pflicht |
-| [OGM-Common](https://github.com/OpenKNX/OGM-Common) | ≥ 1.8 | Pflicht |
+| [OFM-HueGatewayModule](https://github.com/OpenKNX/OFM-HueGateway) | ≥ 0.9.0 | Pflicht |
+| [OFM-LightManager](https://github.com/OpenKNX/OFM-LightManager) | ≥ 0.4.0 | Pflicht (HCL-Engine) |
+| [OFM-Network](https://github.com/OpenKNX/OFM-Network) | ≥ 0.8 | Pflicht |
+| [OGM-Common](https://github.com/OpenKNX/OGM-Common) | ≥ 1.9 | Pflicht |
 
 ### Unterstützte Gerätetypen
 
