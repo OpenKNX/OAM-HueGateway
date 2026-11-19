@@ -36,7 +36,7 @@
     ],
     "settings": {
         "terminal.integrated.env.windows": {
-            "PATH": "C:\\Users\\DESTRIT\\.platformio\\penv\\Scripts;C:\\Users\\DESTRIT\\.platformio\\penv;${env:PATH}",
+            "PATH": "${env:USERPROFILE}\\.platformio\\penv\\Scripts;${env:USERPROFILE}\\.platformio\\penv;${env:PATH}",
             "PLATFORMIO_CALLER": "vscode"
         },
         "files.associations": {
