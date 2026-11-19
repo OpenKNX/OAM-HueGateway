@@ -13,7 +13,7 @@
             "path": "../OFM-FunctionBlocks"
         },
         {
-            "path": "../OFM-HueGatewayModule"
+            "path": "../OFM-HueGateway"
         },
         {
             "path": "../OFM-LogicModule"

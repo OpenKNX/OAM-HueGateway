@@ -42,12 +42,12 @@
   </op:define>
 
   <op:define prefix="HUE" ModuleType="14"
-    share="../lib/OFM-HueGatewayModule/src/HueGatewayModule.share.xml"
-    template="../lib/OFM-HueGatewayModule/src/HueGatewayModule.templ.xml"
+    share="../lib/OFM-HueGateway/src/HueGatewayModule.share.xml"
+    template="../lib/OFM-HueGateway/src/HueGatewayModule.templ.xml"
     NumChannels="32"
     KoOffset="760"
     KoSingleOffset="758">
-    <op:verify File="../lib/OFM-HueGatewayModule/library.json" ModuleVersion="%HUE_VerifyVersion%" />
+    <op:verify File="../lib/OFM-HueGateway/library.json" ModuleVersion="%HUE_VerifyVersion%" />
   </op:define>
 
   <op:define prefix="LOG" ModuleType="10" 
