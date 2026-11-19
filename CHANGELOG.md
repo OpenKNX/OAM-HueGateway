@@ -2,6 +2,16 @@
 
 Alle wesentlichen Änderungen am OpenKNX Hue Gateway Applikationsprodukt werden in dieser Datei dokumentiert.
 
+## [1.0] - 2026-11-19 — 64 Hue-Kanäle
+
+### Geändert
+- Anzahl der Hue-Kanäle von 32 auf **64** erhöht. Die Lichtmanager bleiben bei 16 Kanälen.
+- `ApplicationVersion` von `0.9` auf `1.0` erhöht.
+
+### Keine KO-Verschiebung
+- Die neuen Hue-Kanäle 33–64 belegen die KO-Nummern 1144–1527 hinter den bisherigen. **Bestehende Gruppenadressen und Kanaleinstellungen bleiben erhalten.**
+- Der Parameterspeicher wächst von 32 979 auf 40 147 Byte; nach dem Update ist ein vollständiger Download nötig.
+
 ## [0.9] - 2026-09-24 — Inbetriebnahme aus der ETS
 
 ### Geändert

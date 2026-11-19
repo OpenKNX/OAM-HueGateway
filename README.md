@@ -4,7 +4,7 @@ Das OpenKNX Hue Gateway integriert Philips Hue Geräte über die Hue API v2 in d
 
 ## Features
 
-- Bis zu **32 Hue-Kanäle**, konfigurierbar als Licht, Steckdose, Bewegungsmelder, Kontaktsensor oder Taster/Schalter
+- Bis zu **64 Hue-Kanäle**, konfigurierbar als Licht, Steckdose, Bewegungsmelder, Kontaktsensor oder Taster/Schalter
 - Bidirektionale Synchronisation zwischen KNX und Philips Hue (Event-Stream + Polling)
 - **Lichtmanager** *(via OFM-LightManager)*: bis zu 16 unabhängige Human Centric Lighting Manager mit konfigurierbaren Stützpunkten, Saison-Profilen (Winter/Sommer) und KNX-Sperrobjekten
   - Per-Kanal-HCL-Sperre für Helligkeit und Farbtemperatur (getrennt oder kombiniert)
