@@ -28,7 +28,7 @@
 #define NET_ModuleVersion 8
 #define UCT_ModuleVersion 6
 #define LMG_ModuleVersion 4
-#define HUE_ModuleVersion 9
+#define HUE_ModuleVersion 10
 #define LOG_ModuleVersion 69
 #define FCB_ModuleVersion 11
 // Parameter with single occurrence
